@@ -1,4 +1,4 @@
-# The-Handoff — Nurse Journal
+# The Handoff
 
 An iOS app for nursing shift handoffs and patient documentation.
 
@@ -11,6 +11,6 @@ An iOS app for nursing shift handoffs and patient documentation.
 ## Getting Started
 
 1. Clone this repository
-2. Open `NurseJournal.xcodeproj` in Xcode
+2. Open `TheHandoff.xcodeproj` in Xcode
 3. Select your target device or simulator
 4. Build and run (Cmd+R)

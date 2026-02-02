@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct NurseJournalApp: App {
+struct TheHandoffApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

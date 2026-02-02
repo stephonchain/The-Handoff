@@ -8,7 +8,7 @@ struct ContentView: View {
                     .font(.system(size: 60))
                     .foregroundStyle(.blue)
 
-                Text("Nurse Journal")
+                Text("The Handoff")
                     .font(.largeTitle)
                     .fontWeight(.bold)
 
@@ -17,7 +17,7 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
             }
             .padding()
-            .navigationTitle("Nurse Journal")
+            .navigationTitle("The Handoff")
         }
     }
 }
