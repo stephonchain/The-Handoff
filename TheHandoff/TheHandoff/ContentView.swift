@@ -1,24 +1,36 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var selectedTab = 0
+
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                Image(systemName: "list.clipboard.fill")
-                    .font(.system(size: 60))
-                    .foregroundStyle(.blue)
+        TabView(selection: $selectedTab) {
+            HomeView()
+                .tabItem {
+                    Label(String(localized: "tab_home"), systemImage: "house.fill")
+                }
+                .tag(0)
 
-                Text("The Handoff")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+            JournalListView()
+                .tabItem {
+                    Label(String(localized: "tab_journal"), systemImage: "book.fill")
+                }
+                .tag(1)
 
-                Text("Your shift handoff companion")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-            .padding()
-            .navigationTitle("The Handoff")
+            StatsPlaceholderView()
+                .tabItem {
+                    Label(String(localized: "tab_stats"), systemImage: "chart.bar.fill")
+                }
+                .tag(2)
+
+            SettingsView()
+                .tabItem {
+                    Label(String(localized: "tab_settings"), systemImage: "gearshape.fill")
+                }
+                .tag(3)
         }
+        .tint(Color(hex: "F59E0B"))
     }
 }
 

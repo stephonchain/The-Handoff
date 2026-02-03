@@ -1,0 +1,254 @@
+/* Tabs */
+"tab_home" = "Accueil";
+"tab_journal" = "Journal";
+"tab_stats" = "Stats";
+"tab_settings" = "Réglages";
+
+/* Welcome Screen */
+"welcome_title" = "Bienvenue sur The Handoff";
+"welcome_subtitle" = "Suivez votre bien-être émotionnel shift après shift";
+"welcome_feature_1" = "Suivez votre humeur avant et après chaque shift";
+"welcome_feature_2" = "Écrivez dans votre journal personnel";
+"welcome_feature_3" = "Comptez jusqu'à vos congés";
+"welcome_button" = "Commencer";
+
+/* Name Input */
+"name_input_title" = "Comment vous appelez-vous ?";
+"name_input_placeholder" = "Prénom";
+"name_input_caption" = "Nous utiliserons votre prénom pour personnaliser votre expérience.";
+"name_input_button" = "Continuer";
+
+/* Time Off Setup */
+"timeoff_setup_title" = "Avez-vous des congés prévus ?";
+"timeoff_setup_subtitle" = "Configurez votre premier countdown pour rester motivé(e) !";
+"timeoff_setup_start" = "Date de début";
+"timeoff_setup_end" = "Date de fin";
+"timeoff_setup_button" = "Ajouter mes congés";
+"timeoff_setup_skip" = "Passer";
+
+/* Home Screen */
+"home_greeting" = "Bonjour, %@";
+"home_affirmation_title" = "Affirmation du jour";
+"home_timeoff_countdown" = "Plus que %d jours avant tes congés !";
+"home_timeoff_countdown_plural" = "Plus que %d jours avant tes congés !";
+"home_timeoff_countdown_singular" = "Plus qu'1 jour avant tes congés !";
+"home_quick_actions" = "Actions rapides";
+"home_checkin_button" = "Check-in";
+"home_journal_button" = "Nouveau journal";
+
+/* Check-In */
+"checkin_title" = "Comment te sens-tu avant ton shift ?";
+"checkin_energy" = "Niveau d'énergie";
+"checkin_stress" = "Stress anticipé";
+"checkin_motivation" = "Motivation";
+"checkin_button" = "C'est parti ! 🚀";
+
+/* Energy labels */
+"energy_1" = "Épuisé(e)";
+"energy_2" = "Faible";
+"energy_3" = "Moyen";
+"energy_4" = "Bon";
+"energy_5" = "Excellent";
+
+/* Stress labels */
+"stress_1" = "Très faible";
+"stress_2" = "Faible";
+"stress_3" = "Moyen";
+"stress_4" = "Élevé";
+"stress_5" = "Très élevé";
+
+/* Motivation labels */
+"motivation_1" = "Aucune";
+"motivation_2" = "Faible";
+"motivation_3" = "Moyenne";
+"motivation_4" = "Forte";
+"motivation_5" = "Très forte";
+
+/* Check-Out */
+"checkout_title" = "Comment s'est passé ton shift ?";
+"checkout_fatigue" = "Fatigue";
+"checkout_emotional_load" = "Charge émotionnelle";
+"checkout_satisfaction" = "Satisfaction";
+"checkout_badges_title" = "Comment te sens-tu ?";
+"checkout_title_short" = "Check-out";
+"checkout_button_save" = "Terminer";
+"checkout_button_journal" = "Écrire dans mon journal";
+
+/* Fatigue labels */
+"fatigue_1" = "En forme";
+"fatigue_2" = "Un peu fatigué(e)";
+"fatigue_3" = "Fatigué(e)";
+"fatigue_4" = "Très fatigué(e)";
+"fatigue_5" = "Épuisé(e)";
+
+/* Emotional load labels */
+"emotional_load_1" = "Très légère";
+"emotional_load_2" = "Légère";
+"emotional_load_3" = "Moyenne";
+"emotional_load_4" = "Lourde";
+"emotional_load_5" = "Très lourde";
+
+/* Satisfaction labels */
+"satisfaction_1" = "Mauvaise";
+"satisfaction_2" = "Sous la moyenne";
+"satisfaction_3" = "Moyenne";
+"satisfaction_4" = "Bonne";
+"satisfaction_5" = "Excellente";
+
+/* Mood Badges */
+"badge_happy" = "Content(e)";
+"badge_sad" = "Triste";
+"badge_calm" = "Calme";
+"badge_anxious" = "Anxieux(se)";
+"badge_proud" = "Fier(ère)";
+"badge_tired" = "Fatigué(e)";
+"badge_frustrated" = "Frustré(e)";
+"badge_grateful" = "Reconnaissant(e)";
+
+/* Journal */
+"journal_title" = "Journal";
+"journal_new_title" = "Nouvelle entrée";
+"journal_edit_title" = "Modifier l'entrée";
+"journal_search_placeholder" = "Rechercher...";
+"journal_empty_title" = "Pas encore d'entrées";
+"journal_empty_subtitle" = "Commencez à écrire votre journal";
+"journal_empty_button" = "Créer ma première entrée";
+
+"journal_field_title" = "Titre";
+"journal_field_title_placeholder" = "Titre de votre entrée";
+"journal_field_mood" = "Humeur";
+"journal_field_tags" = "Tags";
+"journal_field_content_placeholder" = "Écrivez ici...";
+"journal_field_highlights" = "Highlights (optionnel)";
+"journal_highlight_placeholder" = "Une chose dont je suis fier(e)";
+
+"journal_button_cancel" = "Annuler";
+"journal_button_save" = "Enregistrer";
+"journal_button_delete" = "Supprimer";
+
+"journal_delete_alert_title" = "Supprimer l'entrée ?";
+"journal_delete_alert_message" = "Cette action est irréversible.";
+"journal_delete_alert_confirm" = "Supprimer";
+"journal_delete_alert_cancel" = "Annuler";
+
+/* Suggested Tags */
+"tag_difficult_shift" = "Shift difficile";
+"tag_great_encounter" = "Belle rencontre";
+"tag_learning" = "Apprentissage";
+"tag_great_team" = "Équipe géniale";
+"tag_fatigue" = "Fatigue";
+"tag_pride" = "Fierté";
+"tag_questioning" = "Questionnement";
+"tag_emergency" = "Urgence";
+"tag_death" = "Décès";
+"tag_recovery" = "Rétablissement";
+"tag_family" = "Famille";
+
+/* Settings */
+"settings_title" = "Réglages";
+"settings_profile" = "Profil";
+"settings_profile_name" = "Prénom";
+"settings_timeoff" = "Congés";
+"settings_timeoff_subtitle" = "%d périodes planifiées";
+"settings_about" = "À propos";
+"settings_version" = "Version";
+"settings_support" = "Support";
+
+/* Time Off Management */
+"timeoff_title" = "Mes congés";
+"timeoff_upcoming" = "À venir";
+"timeoff_past" = "Passés";
+"timeoff_add_title" = "Ajouter des congés";
+"timeoff_edit_title" = "Modifier les congés";
+"timeoff_type" = "Type";
+"timeoff_type_vacation" = "Congés";
+"timeoff_type_rtt" = "RTT";
+"timeoff_type_training" = "Formation";
+"timeoff_custom_name" = "Nom personnalisé (optionnel)";
+"timeoff_days_count" = "%d jours";
+"timeoff_button_save" = "Enregistrer";
+
+/* Stats (Placeholder) */
+"stats_title" = "Statistiques";
+"stats_coming_soon_title" = "Bientôt disponible";
+"stats_coming_soon_subtitle" = "Vos statistiques émotionnelles et tendances apparaîtront ici dans la prochaine version.";
+
+/* Affirmation Categories */
+"category_resilience" = "Résilience";
+"category_competence" = "Compétence";
+"category_compassion" = "Compassion";
+"category_balance" = "Équilibre";
+
+/* General */
+"button_close" = "Fermer";
+"button_done" = "Terminé";
+"button_add" = "Ajouter";
+"button_edit" = "Modifier";
+"button_delete" = "Supprimer";
+"button_cancel" = "Annuler";
+"button_save" = "Enregistrer";
+"button_continue" = "Continuer";
+"button_skip" = "Passer";
+
+"common_today" = "Aujourd'hui";
+"common_yesterday" = "Hier";
+"common_days_ago" = "Il y a %d jours";
+"common_just_now" = "À l'instant";
+
+/* Affirmations - Résilience */
+"affirmation_resilience_1" = "Je fais une différence, même dans les petits gestes";
+"affirmation_resilience_2" = "Mes limites protègent ma capacité à soigner";
+"affirmation_resilience_3" = "Chaque shift difficile me rend plus forte";
+"affirmation_resilience_4" = "Je mérite de me reposer autant que mes patients";
+"affirmation_resilience_5" = "Ma fatigue est légitime, pas une faiblesse";
+"affirmation_resilience_6" = "Je ne peux pas tout contrôler, et c'est ok";
+"affirmation_resilience_7" = "Demander de l'aide est un signe de sagesse";
+"affirmation_resilience_8" = "Je suis humaine, je ne suis pas une machine";
+"affirmation_resilience_9" = "Mes émotions sont valides, même au travail";
+"affirmation_resilience_10" = "Je choisis de me préserver pour durer";
+
+/* Affirmations - Compétence */
+"affirmation_competence_1" = "Mon expérience est précieuse";
+"affirmation_competence_2" = "Je sais ce que je fais, j'ai été formée pour ça";
+"affirmation_competence_3" = "Chaque geste technique que je pose compte";
+"affirmation_competence_4" = "J'apprends de chaque situation";
+"affirmation_competence_5" = "Ma vigilance sauve des vies";
+"affirmation_competence_6" = "Je suis capable de gérer l'imprévu";
+"affirmation_competence_7" = "Mes connaissances se renforcent chaque jour";
+"affirmation_competence_8" = "Je fais confiance à mon jugement clinique";
+"affirmation_competence_9" = "Mon professionnalisme fait la différence";
+"affirmation_competence_10" = "Je suis fière de mon métier";
+
+/* Affirmations - Compassion */
+"affirmation_compassion_1" = "Mon empathie est ma force, pas ma faiblesse";
+"affirmation_compassion_2" = "Écouter un patient est un soin en soi";
+"affirmation_compassion_3" = "Un sourire peut changer une journée";
+"affirmation_compassion_4" = "Je vois la personne derrière la pathologie";
+"affirmation_compassion_5" = "Ma présence apaise";
+"affirmation_compassion_6" = "Chaque patient mérite ma bienveillance";
+"affirmation_compassion_7" = "Je suis le lien humain dans un système technique";
+"affirmation_compassion_8" = "Mon humanité est mon meilleur outil";
+"affirmation_compassion_9" = "Prendre soin commence par un regard";
+"affirmation_compassion_10" = "Je crée de la sécurité par ma présence";
+"affirmation_compassion_11" = "Mon attention est un cadeau que j'offre";
+"affirmation_compassion_12" = "Je suis là, et ça compte";
+"affirmation_compassion_13" = "Ma compassion ne s'épuise pas, elle se nourrit";
+"affirmation_compassion_14" = "Chaque geste doux est un acte de résistance";
+"affirmation_compassion_15" = "Je soigne avec mes mains et mon cœur";
+
+/* Affirmations - Équilibre */
+"affirmation_balance_1" = "Mes jours de repos sont sacrés";
+"affirmation_balance_2" = "Je ne suis pas que mon métier";
+"affirmation_balance_3" = "Prendre soin de moi me permet de soigner les autres";
+"affirmation_balance_4" = "Dire non protège mon énergie";
+"affirmation_balance_5" = "Mon bien-être personnel n'est pas égoïste";
+"affirmation_balance_6" = "Je mérite une vie en dehors de l'hôpital";
+"affirmation_balance_7" = "Mes loisirs me ressourcent pour mieux soigner";
+"affirmation_balance_8" = "L'équilibre vie pro/perso est un droit, pas un luxe";
+"affirmation_balance_9" = "Je ne ramène pas le travail à la maison (dans ma tête)";
+"affirmation_balance_10" = "Mes proches ont besoin de moi entière, pas épuisée";
+"affirmation_balance_11" = "Déconnecter est nécessaire pour reconnecter";
+"affirmation_balance_12" = "Mon identité dépasse ma blouse";
+"affirmation_balance_13" = "Je cultive ma vie personnelle avec autant de soin";
+"affirmation_balance_14" = "Mes vacances sont vitales, pas optionnelles";
+"affirmation_balance_15" = "Je choisis de vivre, pas seulement de survivre";
