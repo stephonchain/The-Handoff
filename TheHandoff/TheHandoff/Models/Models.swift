@@ -10,6 +10,8 @@ final class UserProfile {
     var firstName: String
     var createdAt: Date
     var onboardingCompleted: Bool
+    var serviceType: String?
+    var workRhythm: String?
 
     init(firstName: String) {
         self.id = UUID()

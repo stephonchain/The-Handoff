@@ -130,6 +130,7 @@ struct OnboardingView: View {
                     .tag(8)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
+                .scrollDisabled(true) // Disable swipe to prevent conflict with DatePicker
                 .animation(.easeInOut(duration: 0.3), value: currentStep)
             }
         }
@@ -141,6 +142,8 @@ struct OnboardingView: View {
     }
 
     private func nextStep() {
+        // Dismiss keyboard
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         withAnimation {
             currentStep += 1
         }
@@ -154,8 +157,11 @@ struct OnboardingView: View {
     }
 
     private func saveProfile() {
-        let profile = UserProfile(firstName: firstName.trimmingCharacters(in: .whitespacesAndNewlines))
+        let cleanedName = firstName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let profile = UserProfile(firstName: cleanedName)
         profile.onboardingCompleted = true
+        profile.serviceType = serviceType.rawValue
+        profile.workRhythm = workRhythm.rawValue
         modelContext.insert(profile)
         try? modelContext.save()
     }
@@ -247,9 +253,11 @@ struct OnboardingNameStep: View {
                     .foregroundStyle(Color(hex: "F59E0B"))
 
                 Text("Comment tu t'appelles ?")
-                    .font(.title)
+                    .font(.title2)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.8)
+                    .lineLimit(1)
 
                 TextField("Ton prénom", text: $firstName)
                     .font(.title2)
@@ -585,7 +593,7 @@ struct OnboardingSummaryStep: View {
             ScrollView {
                 VStack(spacing: 24) {
                     VStack(spacing: 12) {
-                        Text("Merci \(firstName) !")
+                        Text(verbatim: "Merci \(firstName.trimmingCharacters(in: .whitespacesAndNewlines)) !")
                             .font(.title)
                             .fontWeight(.bold)
 
