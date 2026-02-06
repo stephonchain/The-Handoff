@@ -56,8 +56,15 @@ struct PaywallView: View {
             Text(errorMessage)
         }
         .onAppear {
-            if let yearly = subscriptionManager.yearlyProduct {
-                selectedProduct = yearly
+            Task {
+                // Reload products when view appears
+                if subscriptionManager.products.isEmpty {
+                    await subscriptionManager.loadProducts()
+                }
+                // Select yearly by default
+                if selectedProduct == nil {
+                    selectedProduct = subscriptionManager.yearlyProduct ?? subscriptionManager.monthlyProduct ?? subscriptionManager.lifetimeProduct
+                }
             }
         }
     }
@@ -125,9 +132,33 @@ struct PaywallView: View {
     // MARK: - Products
     private var productsSection: some View {
         VStack(spacing: 12) {
-            if subscriptionManager.isLoading && subscriptionManager.products.isEmpty {
+            if subscriptionManager.isLoading {
                 ProgressView()
                     .padding(.vertical, 40)
+            } else if subscriptionManager.products.isEmpty {
+                // No products available - show debug info
+                VStack(spacing: 12) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.largeTitle)
+                        .foregroundStyle(.orange)
+                    Text("Produits non disponibles")
+                        .font(.headline)
+                    Text("Vérifie que Configuration.storekit est sélectionné dans Scheme > Run > Options > StoreKit Configuration")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+
+                    Button("Réessayer") {
+                        Task {
+                            await subscriptionManager.loadProducts()
+                            selectedProduct = subscriptionManager.yearlyProduct
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(Color(hex: "F59E0B"))
+                }
+                .padding(.vertical, 20)
+                .padding(.horizontal, 16)
             } else {
                 // Yearly - Best Value
                 if let yearly = subscriptionManager.yearlyProduct {
