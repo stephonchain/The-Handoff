@@ -8,7 +8,10 @@ struct VacationSetupView: View {
     let onBack: () -> Void
 
     var isValid: Bool {
-        endDate > startDate && startDate > Date()
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let start = calendar.startOfDay(for: startDate)
+        return endDate >= startDate && start >= today
     }
 
     var body: some View {
