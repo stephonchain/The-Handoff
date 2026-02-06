@@ -140,7 +140,7 @@ struct PaywallView: View {
                         withAnimation(.spring(response: 0.3)) {
                             selectedProduct = yearly
                         }
-                        HapticManager.shared.impact(.light)
+                        HapticManager.shared.impact(style: .light)
                     }
                 }
 
@@ -155,7 +155,7 @@ struct PaywallView: View {
                         withAnimation(.spring(response: 0.3)) {
                             selectedProduct = monthly
                         }
-                        HapticManager.shared.impact(.light)
+                        HapticManager.shared.impact(style: .light)
                     }
                 }
 
@@ -171,7 +171,7 @@ struct PaywallView: View {
                         withAnimation(.spring(response: 0.3)) {
                             selectedProduct = lifetime
                         }
-                        HapticManager.shared.impact(.light)
+                        HapticManager.shared.impact(style: .light)
                     }
                 }
             }
@@ -297,13 +297,13 @@ struct PaywallView: View {
         do {
             let success = try await subscriptionManager.purchase(product)
             if success {
-                HapticManager.shared.notification(.success)
+                HapticManager.shared.notification(type: .success)
                 dismiss()
             }
         } catch {
             errorMessage = error.localizedDescription
             showError = true
-            HapticManager.shared.notification(.error)
+            HapticManager.shared.notification(type: .error)
         }
     }
 }
