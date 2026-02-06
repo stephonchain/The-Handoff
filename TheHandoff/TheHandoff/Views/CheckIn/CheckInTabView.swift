@@ -271,7 +271,7 @@ struct CheckInTabView: View {
 
                 Image(systemName: hasCheckedIn ? "pencil" : "chevron.right")
                     .font(.body)
-                    .foregroundStyle(hasCheckedIn ? Color(hex: "F59E0B") : .tertiary)
+                    .foregroundStyle(hasCheckedIn ? Color(hex: "F59E0B") : Color(.tertiaryLabel))
             }
             .padding(16)
             .background(Color(.systemBackground))
@@ -319,7 +319,7 @@ struct CheckInTabView: View {
 
                 Image(systemName: hasCheckedOut ? "pencil" : "chevron.right")
                     .font(.body)
-                    .foregroundStyle(hasCheckedOut ? Color(hex: "F59E0B") : .tertiary)
+                    .foregroundStyle(hasCheckedOut ? Color(hex: "F59E0B") : Color(.tertiaryLabel))
             }
             .padding(16)
             .background(Color(.systemBackground))
