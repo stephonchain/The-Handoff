@@ -9,6 +9,10 @@ struct NewJournalEntryView: View {
 
     let mode: JournalMode
 
+    // Subscription
+    @State private var subscriptionManager = SubscriptionManager.shared
+    @State private var showPaywall = false
+
     // Entry data
     @State private var entryDate: Date = Date()
     @State private var content: String = ""
@@ -33,6 +37,10 @@ struct NewJournalEntryView: View {
 
     // UI state
     @State private var showingDatePicker = false
+
+    private var isPremium: Bool {
+        subscriptionManager.isPremium
+    }
 
     var body: some View {
         NavigationStack {
@@ -88,6 +96,9 @@ struct NewJournalEntryView: View {
             }
             .onChange(of: selectedPhotoItems) { _, newItems in
                 loadSelectedPhotos(from: newItems)
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
             }
         }
     }
@@ -262,43 +273,80 @@ struct NewJournalEntryView: View {
             }
 
             // Action buttons
-            HStack(spacing: 12) {
-                // Photo picker
-                PhotosPicker(
-                    selection: $selectedPhotoItems,
-                    maxSelectionCount: 5,
-                    matching: .images
-                ) {
-                    HStack {
-                        Image(systemName: "photo")
-                        Text("Photos")
-                            .font(.subheadline)
+            if isPremium {
+                HStack(spacing: 12) {
+                    // Photo picker
+                    PhotosPicker(
+                        selection: $selectedPhotoItems,
+                        maxSelectionCount: 5,
+                        matching: .images
+                    ) {
+                        HStack {
+                            Image(systemName: "photo")
+                            Text("Photos")
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Color(.systemBackground))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
-                    .frame(maxWidth: .infinity)
+                    .buttonStyle(.plain)
+
+                    // Audio recorder
+                    Button(action: toggleRecording) {
+                        HStack {
+                            Image(systemName: isRecording ? "stop.circle.fill" : "mic")
+                                .foregroundStyle(isRecording ? .red : .primary)
+                            Text(isRecording ? "Arrêter" : "Audio")
+                                .font(.subheadline)
+                                .foregroundStyle(isRecording ? .red : .primary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(isRecording ? Color.red.opacity(0.1) : Color(.systemBackground))
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(isRecording ? Color.red : .clear, lineWidth: 2)
+                        )
+                    }
+                }
+            } else {
+                // Premium locked media buttons
+                Button(action: { showPaywall = true }) {
+                    HStack(spacing: 12) {
+                        HStack {
+                            Image(systemName: "photo")
+                            Text("Photos")
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity)
+
+                        HStack {
+                            Image(systemName: "mic")
+                            Text("Audio")
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity)
+
+                        HStack(spacing: 4) {
+                            Image(systemName: "lock.fill")
+                                .font(.caption)
+                            Text("Premium")
+                                .font(.caption.weight(.semibold))
+                        }
+                        .foregroundStyle(Color(hex: "F59E0B"))
+                    }
                     .padding(.vertical, 14)
                     .background(Color(.systemBackground))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
-                }
-                .buttonStyle(.plain)
-
-                // Audio recorder
-                Button(action: toggleRecording) {
-                    HStack {
-                        Image(systemName: isRecording ? "stop.circle.fill" : "mic")
-                            .foregroundStyle(isRecording ? .red : .primary)
-                        Text(isRecording ? "Arrêter" : "Audio")
-                            .font(.subheadline)
-                            .foregroundStyle(isRecording ? .red : .primary)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(isRecording ? Color.red.opacity(0.1) : Color(.systemBackground))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
-                            .stroke(isRecording ? Color.red : .clear, lineWidth: 2)
+                            .stroke(Color(hex: "F59E0B").opacity(0.3), lineWidth: 1)
                     )
                 }
+                .buttonStyle(.plain)
             }
         }
         .padding()

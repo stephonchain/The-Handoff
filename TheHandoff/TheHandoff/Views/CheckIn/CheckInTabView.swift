@@ -12,6 +12,28 @@ struct CheckInTabView: View {
     @State private var showingQuickMode = false
     @State private var editingPreShift = false
     @State private var editingPostShift = false
+    @State private var showingPaywall = false
+    @State private var subscriptionManager = SubscriptionManager.shared
+
+    private let freeWeeklyLimit = 3
+
+    private var isPremium: Bool {
+        subscriptionManager.isPremium
+    }
+
+    private var weeklyCheckInCount: Int {
+        let calendar = Calendar.current
+        let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())) ?? Date()
+        return shifts.filter { $0.date >= startOfWeek && $0.hasPreMood }.count
+    }
+
+    private var canDoCheckIn: Bool {
+        isPremium || weeklyCheckInCount < freeWeeklyLimit
+    }
+
+    private var remainingFreeCheckIns: Int {
+        max(0, freeWeeklyLimit - weeklyCheckInCount)
+    }
 
     private var selectedShift: Shift? {
         shifts.first { Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }
@@ -82,6 +104,9 @@ struct CheckInTabView: View {
         .sheet(isPresented: $showingQuickMode) {
             QuickCheckInView()
                 .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $showingPaywall) {
+            PaywallView()
         }
     }
 
@@ -213,6 +238,34 @@ struct CheckInTabView: View {
             Text("30 secondes pour prendre soin de toi")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+
+            // Free tier limit indicator
+            if !isPremium {
+                Button(action: { showingPaywall = true }) {
+                    HStack(spacing: 6) {
+                        if remainingFreeCheckIns > 0 {
+                            Text("\(remainingFreeCheckIns) check-in\(remainingFreeCheckIns > 1 ? "s" : "") restant\(remainingFreeCheckIns > 1 ? "s" : "") cette semaine")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        } else {
+                            Image(systemName: "lock.fill")
+                                .font(.caption2)
+                            Text("Limite atteinte")
+                                .font(.caption)
+                        }
+                        Text("·")
+                            .foregroundStyle(.secondary)
+                        Text("Passer en illimité")
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Color(hex: "F59E0B"))
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color(hex: "F59E0B").opacity(0.1))
+                    .clipShape(Capsule())
+                }
+                .padding(.top, 4)
+            }
         }
         .padding(.vertical, 12)
     }
@@ -242,8 +295,10 @@ struct CheckInTabView: View {
         Button(action: {
             if hasCheckedIn {
                 editingPreShift = true
-            } else {
+            } else if canDoCheckIn {
                 showingPreShift = true
+            } else {
+                showingPaywall = true
             }
         }) {
             HStack(spacing: 16) {
@@ -290,8 +345,10 @@ struct CheckInTabView: View {
         Button(action: {
             if hasCheckedOut {
                 editingPostShift = true
-            } else {
+            } else if canDoCheckIn {
                 showingPostShift = true
+            } else {
+                showingPaywall = true
             }
         }) {
             HStack(spacing: 16) {
