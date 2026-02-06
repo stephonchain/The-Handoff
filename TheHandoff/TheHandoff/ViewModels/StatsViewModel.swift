@@ -366,6 +366,13 @@ struct MoodComparison: Identifiable {
 
     var improvement: Double { postMood - preMood }
     var improved: Bool { improvement > 0 }
+
+    var dateLabel: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMM"
+        formatter.locale = Locale(identifier: "fr_FR")
+        return formatter.string(from: date)
+    }
 }
 
 struct Insight: Identifiable {

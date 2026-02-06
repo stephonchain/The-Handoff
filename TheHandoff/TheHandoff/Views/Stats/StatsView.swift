@@ -165,39 +165,51 @@ struct ProgressionView: View {
             if vm.weeklyMoodData.isEmpty || vm.weeklyMoodData.allSatisfy({ $0.preShiftMood == nil && $0.postShiftMood == nil }) {
                 emptyChartPlaceholder()
             } else {
+                // Separate data for each series
+                let preShiftData = vm.weeklyMoodData.compactMap { point -> ChartDataPoint? in
+                    guard let mood = point.preShiftMood else { return nil }
+                    return ChartDataPoint(dayLabel: point.dayLabel, mood: mood, series: "Avant shift")
+                }
+                let postShiftData = vm.weeklyMoodData.compactMap { point -> ChartDataPoint? in
+                    guard let mood = point.postShiftMood else { return nil }
+                    return ChartDataPoint(dayLabel: point.dayLabel, mood: mood, series: "Après shift")
+                }
+
                 Chart {
-                    ForEach(vm.weeklyMoodData) { point in
-                        if let pre = point.preShiftMood {
-                            LineMark(
-                                x: .value("Day", point.dayLabel),
-                                y: .value("Mood", pre)
-                            )
-                            .foregroundStyle(Color(hex: "F59E0B"))
-                            .symbol(Circle())
-                            .interpolationMethod(.catmullRom)
+                    // Pre-shift line
+                    ForEach(preShiftData) { point in
+                        LineMark(
+                            x: .value("Jour", point.dayLabel),
+                            y: .value("Humeur", point.mood),
+                            series: .value("Série", point.series)
+                        )
+                        .foregroundStyle(Color(hex: "F59E0B"))
+                        .interpolationMethod(.catmullRom)
 
-                            PointMark(
-                                x: .value("Day", point.dayLabel),
-                                y: .value("Mood", pre)
-                            )
-                            .foregroundStyle(Color(hex: "F59E0B"))
-                        }
+                        PointMark(
+                            x: .value("Jour", point.dayLabel),
+                            y: .value("Humeur", point.mood)
+                        )
+                        .foregroundStyle(Color(hex: "F59E0B"))
+                        .symbolSize(60)
+                    }
 
-                        if let post = point.postShiftMood {
-                            LineMark(
-                                x: .value("Day", point.dayLabel),
-                                y: .value("Mood", post)
-                            )
-                            .foregroundStyle(Color(hex: "8B5CF6"))
-                            .symbol(Circle())
-                            .interpolationMethod(.catmullRom)
+                    // Post-shift line
+                    ForEach(postShiftData) { point in
+                        LineMark(
+                            x: .value("Jour", point.dayLabel),
+                            y: .value("Humeur", point.mood),
+                            series: .value("Série", point.series)
+                        )
+                        .foregroundStyle(Color(hex: "8B5CF6"))
+                        .interpolationMethod(.catmullRom)
 
-                            PointMark(
-                                x: .value("Day", point.dayLabel),
-                                y: .value("Mood", post)
-                            )
-                            .foregroundStyle(Color(hex: "8B5CF6"))
-                        }
+                        PointMark(
+                            x: .value("Jour", point.dayLabel),
+                            y: .value("Humeur", point.mood)
+                        )
+                        .foregroundStyle(Color(hex: "8B5CF6"))
+                        .symbolSize(60)
                     }
                 }
                 .chartYScale(domain: 1...5)
@@ -246,15 +258,15 @@ struct ProgressionView: View {
             } else {
                 Chart(vm.moodComparisonData) { comparison in
                     BarMark(
-                        x: .value("Mood", comparison.preMood),
-                        y: .value("Date", comparison.date, unit: .day)
+                        x: .value("Humeur", comparison.preMood),
+                        y: .value("Date", comparison.dateLabel)
                     )
                     .foregroundStyle(Color(hex: "F59E0B"))
                     .cornerRadius(4)
 
                     BarMark(
-                        x: .value("Mood", comparison.postMood),
-                        y: .value("Date", comparison.date, unit: .day)
+                        x: .value("Humeur", comparison.postMood),
+                        y: .value("Date", comparison.dateLabel)
                     )
                     .foregroundStyle(Color(hex: "8B5CF6"))
                     .cornerRadius(4)
@@ -262,15 +274,31 @@ struct ProgressionView: View {
                 .chartXScale(domain: 0...5)
                 .chartYAxis {
                     AxisMarks { value in
-                        if let date = value.as(Date.self) {
-                            AxisValueLabel {
-                                Text(date, format: .dateTime.day().month(.abbreviated))
-                                    .font(.caption2)
-                            }
-                        }
+                        AxisValueLabel()
+                            .font(.caption2)
                     }
                 }
                 .frame(height: CGFloat(vm.moodComparisonData.count * 50 + 20))
+
+                // Legend
+                HStack(spacing: 20) {
+                    HStack(spacing: 6) {
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(Color(hex: "F59E0B"))
+                            .frame(width: 12, height: 8)
+                        Text("Avant")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    HStack(spacing: 6) {
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(Color(hex: "8B5CF6"))
+                            .frame(width: 12, height: 8)
+                        Text("Après")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
 
                 // Summary
                 if let avgImprovement = averageImprovement(vm.moodComparisonData) {
@@ -516,4 +544,13 @@ enum TimeRange: String, CaseIterable {
     case week = "Week"
     case month = "Month"
     case all = "All"
+}
+
+// MARK: - Chart Data Point
+
+struct ChartDataPoint: Identifiable {
+    let id = UUID()
+    let dayLabel: String
+    let mood: Double
+    let series: String
 }
