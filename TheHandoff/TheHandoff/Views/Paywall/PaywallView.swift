@@ -320,9 +320,12 @@ struct PaywallView: View {
         }
 
         let yearlyTotal = product.price
-        let monthlyTotal = monthly.price * 12
+        let monthlyTotal = monthly.price * Decimal(12)
+
+        guard monthlyTotal > 0 else { return nil }
+
         let savings = monthlyTotal - yearlyTotal
-        let percentage = NSDecimalNumber(decimal: (savings / monthlyTotal) * 100).intValue
+        let percentage = NSDecimalNumber(decimal: (savings / monthlyTotal) * Decimal(100)).intValue
 
         return "Économise \(percentage)%"
     }
