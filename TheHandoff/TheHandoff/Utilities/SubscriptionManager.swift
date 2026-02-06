@@ -42,6 +42,7 @@ final class SubscriptionManager {
     private(set) var purchasedProductIDs: Set<String> = []
     private(set) var subscriptionStatus: SubscriptionStatus = .notSubscribed
     private(set) var isLoading = false
+    private(set) var loadError: String?
 
     private var updateListenerTask: Task<Void, Error>?
 
@@ -78,16 +79,23 @@ final class SubscriptionManager {
     @MainActor
     func loadProducts() async {
         isLoading = true
+        loadError = nil
         defer { isLoading = false }
 
         do {
             let productIDs = SubscriptionProduct.allCases.map { $0.rawValue }
+            print("🛒 Loading products: \(productIDs)")
             products = try await Product.products(for: productIDs)
+            print("🛒 Loaded \(products.count) products")
             products.sort { product1, product2 in
                 product1.price < product2.price
             }
+            if products.isEmpty {
+                loadError = "Aucun produit trouvé pour les IDs: \(productIDs.joined(separator: ", "))"
+            }
         } catch {
-            print("Failed to load products: \(error)")
+            loadError = error.localizedDescription
+            print("🛒 Failed to load products: \(error)")
         }
     }
 

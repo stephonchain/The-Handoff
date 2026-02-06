@@ -143,6 +143,14 @@ struct PaywallView: View {
                         .foregroundStyle(.orange)
                     Text("Produits non disponibles")
                         .font(.headline)
+
+                    if let error = subscriptionManager.loadError {
+                        Text(error)
+                            .font(.caption)
+                            .foregroundStyle(.red)
+                            .multilineTextAlignment(.center)
+                    }
+
                     Text("Vérifie que Configuration.storekit est sélectionné dans Scheme > Run > Options > StoreKit Configuration")
                         .font(.caption)
                         .foregroundStyle(.secondary)
