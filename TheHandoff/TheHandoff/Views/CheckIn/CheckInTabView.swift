@@ -5,56 +5,79 @@ struct CheckInTabView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Shift.date, order: .reverse) private var shifts: [Shift]
 
+    @State private var selectedDate: Date = Date()
+    @State private var showingDatePicker = false
     @State private var showingPreShift = false
     @State private var showingPostShift = false
     @State private var showingQuickMode = false
+    @State private var editingPreShift = false
+    @State private var editingPostShift = false
 
-    private var todayShift: Shift? {
-        shifts.first { Calendar.current.isDateInToday($0.date) }
+    private var selectedShift: Shift? {
+        shifts.first { Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }
     }
 
-    private var hasCheckedInToday: Bool {
-        todayShift?.hasPreMood ?? false
+    private var hasCheckedIn: Bool {
+        selectedShift?.hasPreMood ?? false
     }
 
-    private var hasCheckedOutToday: Bool {
-        todayShift?.hasPostMood ?? false
+    private var hasCheckedOut: Bool {
+        selectedShift?.hasPostMood ?? false
+    }
+
+    private var isToday: Bool {
+        Calendar.current.isDateInToday(selectedDate)
     }
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 24) {
-                    // Header
+                VStack(spacing: 20) {
+                    // Date selector
+                    dateSelector
+
+                    // Header with icon
                     headerSection
 
-                    // Quick mode button
-                    quickModeButton
+                    // Quick mode (only for today)
+                    if isToday {
+                        quickModeButton
+                    }
 
                     // Main actions
-                    VStack(spacing: 16) {
+                    VStack(spacing: 12) {
                         checkInCard
                         checkOutCard
                     }
 
-                    // Today's summary if exists
-                    if hasCheckedInToday || hasCheckedOutToday {
-                        todaySummary
+                    // Summary
+                    if hasCheckedIn || hasCheckedOut {
+                        summaryCard
                     }
 
                     Spacer(minLength: 50)
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 16)
+                .padding(.top, 8)
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Check-in")
         }
         .sheet(isPresented: $showingPreShift) {
-            PreShiftCheckInView()
+            PreShiftCheckInView(date: selectedDate)
         }
         .sheet(isPresented: $showingPostShift) {
-            PostShiftCheckInView()
+            PostShiftCheckInView(date: selectedDate)
+        }
+        .sheet(isPresented: $editingPreShift) {
+            if let shift = selectedShift, let mood = shift.preMood {
+                EditPreShiftView(shift: shift, mood: mood)
+            }
+        }
+        .sheet(isPresented: $editingPostShift) {
+            if let shift = selectedShift, let mood = shift.postMood {
+                EditPostShiftView(shift: shift, mood: mood)
+            }
         }
         .sheet(isPresented: $showingQuickMode) {
             QuickCheckInView()
@@ -62,31 +85,145 @@ struct CheckInTabView: View {
         }
     }
 
+    // MARK: - Date Selector
+
+    private var dateSelector: some View {
+        VStack(spacing: 12) {
+            // Current date display
+            Button(action: { showingDatePicker.toggle() }) {
+                HStack {
+                    Image(systemName: "calendar")
+                        .font(.title3)
+                        .foregroundStyle(Color(hex: "F59E0B"))
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(selectedDate, format: .dateTime.weekday(.wide))
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        Text(selectedDate, format: .dateTime.day().month(.wide).year())
+                            .font(.title3)
+                            .fontWeight(.semibold)
+                    }
+
+                    Spacer()
+
+                    if !isToday {
+                        Button(action: { withAnimation { selectedDate = Date() } }) {
+                            Text("Aujourd'hui")
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(Color(hex: "F59E0B"))
+                                .foregroundStyle(.white)
+                                .clipShape(Capsule())
+                        }
+                    }
+
+                    Image(systemName: "chevron.down")
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
+                .padding(16)
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .foregroundStyle(.primary)
+
+            // Date picker (expandable)
+            if showingDatePicker {
+                DatePicker(
+                    "Sélectionner une date",
+                    selection: $selectedDate,
+                    in: ...Date(),
+                    displayedComponents: .date
+                )
+                .datePickerStyle(.graphical)
+                .tint(Color(hex: "F59E0B"))
+                .padding()
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .onChange(of: selectedDate) { _, _ in
+                    showingDatePicker = false
+                }
+            }
+
+            // Quick day navigation
+            HStack(spacing: 8) {
+                ForEach(-6...0, id: \.self) { offset in
+                    let date = Calendar.current.date(byAdding: .day, value: offset, to: Date()) ?? Date()
+                    let isSelected = Calendar.current.isDate(date, inSameDayAs: selectedDate)
+                    let hasData = shifts.contains { Calendar.current.isDate($0.date, inSameDayAs: date) }
+
+                    Button(action: { withAnimation { selectedDate = date } }) {
+                        VStack(spacing: 4) {
+                            Text(date, format: .dateTime.weekday(.narrow))
+                                .font(.caption2)
+                            Text(date, format: .dateTime.day())
+                                .font(.callout)
+                                .fontWeight(isSelected ? .bold : .regular)
+
+                            // Indicator dot
+                            Circle()
+                                .fill(hasData ? Color(hex: "10B981") : Color.clear)
+                                .frame(width: 6, height: 6)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(isSelected ? Color(hex: "F59E0B").opacity(0.15) : Color.clear)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(isSelected ? Color(hex: "F59E0B") : Color.clear, lineWidth: 2)
+                        )
+                    }
+                    .foregroundStyle(isSelected ? Color(hex: "F59E0B") : .primary)
+                }
+            }
+        }
+    }
+
     // MARK: - Header
 
     private var headerSection: some View {
         VStack(spacing: 8) {
-            Text("🩺")
-                .font(.system(size: 48))
+            // SF Symbol instead of emoji
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [Color(hex: "F59E0B").opacity(0.2), Color(hex: "F59E0B").opacity(0.1)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(width: 80, height: 80)
+
+                Image(systemName: "stethoscope")
+                    .font(.system(size: 36))
+                    .foregroundStyle(Color(hex: "F59E0B"))
+            }
 
             Text("Ton rituel quotidien")
-                .font(.title2)
+                .font(.title3)
                 .fontWeight(.bold)
 
             Text("30 secondes pour prendre soin de toi")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
         }
-        .padding(.vertical, 20)
+        .padding(.vertical, 12)
     }
 
     // MARK: - Quick Mode
 
     private var quickModeButton: some View {
         Button(action: { showingQuickMode = true }) {
-            HStack {
-                Image(systemName: "bolt.circle.fill")
-                    .font(.title3)
+            HStack(spacing: 10) {
+                Image(systemName: "bolt.fill")
+                    .font(.body)
                 Text("Je suis rincé(e), version ultra courte")
                     .font(.subheadline)
                     .fontWeight(.medium)
@@ -102,15 +239,21 @@ struct CheckInTabView: View {
     // MARK: - Check-in Card
 
     private var checkInCard: some View {
-        Button(action: { showingPreShift = true }) {
+        Button(action: {
+            if hasCheckedIn {
+                editingPreShift = true
+            } else {
+                showingPreShift = true
+            }
+        }) {
             HStack(spacing: 16) {
                 ZStack {
                     Circle()
-                        .fill(hasCheckedInToday ? Color(hex: "10B981") : Color(hex: "F59E0B"))
-                        .frame(width: 56, height: 56)
+                        .fill(hasCheckedIn ? Color(hex: "10B981") : Color(hex: "F59E0B"))
+                        .frame(width: 52, height: 52)
 
-                    Image(systemName: hasCheckedInToday ? "checkmark" : "sunrise.fill")
-                        .font(.title2)
+                    Image(systemName: hasCheckedIn ? "checkmark" : "sun.horizon.fill")
+                        .font(.title3)
                         .foregroundStyle(.white)
                 }
 
@@ -119,37 +262,46 @@ struct CheckInTabView: View {
                         .font(.headline)
                         .foregroundStyle(.primary)
 
-                    Text(hasCheckedInToday ? "Complété ✓" : "Comment tu te sens ?")
-                        .font(.subheadline)
+                    Text(hasCheckedIn ? "Complété · Toucher pour modifier" : "Comment tu te sens ?")
+                        .font(.caption)
                         .foregroundStyle(.secondary)
                 }
 
                 Spacer()
 
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.tertiary)
+                Image(systemName: hasCheckedIn ? "pencil" : "chevron.right")
+                    .font(.body)
+                    .foregroundStyle(hasCheckedIn ? Color(hex: "F59E0B") : .tertiary)
             }
-            .padding(20)
+            .padding(16)
             .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(hasCheckedIn ? Color(hex: "10B981").opacity(0.3) : Color.clear, lineWidth: 1)
+            )
             .cardShadow()
         }
-        .disabled(hasCheckedInToday)
-        .opacity(hasCheckedInToday ? 0.7 : 1)
     }
 
     // MARK: - Check-out Card
 
     private var checkOutCard: some View {
-        Button(action: { showingPostShift = true }) {
+        Button(action: {
+            if hasCheckedOut {
+                editingPostShift = true
+            } else {
+                showingPostShift = true
+            }
+        }) {
             HStack(spacing: 16) {
                 ZStack {
                     Circle()
-                        .fill(hasCheckedOutToday ? Color(hex: "10B981") : Color(hex: "8B5CF6"))
-                        .frame(width: 56, height: 56)
+                        .fill(hasCheckedOut ? Color(hex: "10B981") : Color(hex: "8B5CF6"))
+                        .frame(width: 52, height: 52)
 
-                    Image(systemName: hasCheckedOutToday ? "checkmark" : "sunset.fill")
-                        .font(.title2)
+                    Image(systemName: hasCheckedOut ? "checkmark" : "moon.stars.fill")
+                        .font(.title3)
                         .foregroundStyle(.white)
                 }
 
@@ -158,84 +310,122 @@ struct CheckInTabView: View {
                         .font(.headline)
                         .foregroundStyle(.primary)
 
-                    Text(hasCheckedOutToday ? "Complété ✓" : "Comment s'est passée ta journée ?")
-                        .font(.subheadline)
+                    Text(hasCheckedOut ? "Complété · Toucher pour modifier" : "Comment s'est passée ta journée ?")
+                        .font(.caption)
                         .foregroundStyle(.secondary)
                 }
 
                 Spacer()
 
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.tertiary)
+                Image(systemName: hasCheckedOut ? "pencil" : "chevron.right")
+                    .font(.body)
+                    .foregroundStyle(hasCheckedOut ? Color(hex: "F59E0B") : .tertiary)
             }
-            .padding(20)
+            .padding(16)
             .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14)
+                    .stroke(hasCheckedOut ? Color(hex: "10B981").opacity(0.3) : Color.clear, lineWidth: 1)
+            )
             .cardShadow()
         }
-        .disabled(!hasCheckedInToday || hasCheckedOutToday)
-        .opacity((!hasCheckedInToday || hasCheckedOutToday) ? 0.7 : 1)
+        .disabled(!hasCheckedIn && !hasCheckedOut)
+        .opacity((!hasCheckedIn && !hasCheckedOut) ? 0.5 : 1)
     }
 
-    // MARK: - Today's Summary
+    // MARK: - Summary Card
 
     @ViewBuilder
-    private var todaySummary: some View {
-        if let shift = todayShift {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Aujourd'hui")
-                    .font(.headline)
+    private var summaryCard: some View {
+        if let shift = selectedShift {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    Image(systemName: "chart.bar.fill")
+                        .foregroundStyle(Color(hex: "F59E0B"))
+                    Text("Résumé")
+                        .font(.headline)
+                }
 
                 if let pre = shift.preMood {
-                    HStack {
-                        Label("Avant", systemImage: "sunrise.fill")
-                            .font(.caption)
-                            .foregroundStyle(Color(hex: "F59E0B"))
-                        Spacer()
-                        moodSummary(energy: pre.energy, stress: pre.stress, motivation: pre.motivation)
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "sun.horizon.fill")
+                                .foregroundStyle(Color(hex: "F59E0B"))
+                            Text("Avant le shift")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                        }
+
+                        HStack(spacing: 16) {
+                            MoodIndicator(icon: "bolt.fill", value: pre.energy, label: "Énergie", color: Color(hex: "10B981"))
+                            MoodIndicator(icon: "brain.head.profile", value: pre.stress, label: "Charge", color: Color(hex: "8B5CF6"))
+                            MoodIndicator(icon: "heart.fill", value: pre.motivation, label: "Humeur", color: Color(hex: "F59E0B"))
+                        }
                     }
+                    .padding(12)
+                    .background(Color(hex: "F59E0B").opacity(0.05))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
 
                 if let post = shift.postMood {
-                    HStack {
-                        Label("Après", systemImage: "sunset.fill")
-                            .font(.caption)
-                            .foregroundStyle(Color(hex: "8B5CF6"))
-                        Spacer()
-                        postMoodSummary(post)
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Image(systemName: "moon.stars.fill")
+                                .foregroundStyle(Color(hex: "8B5CF6"))
+                            Text("Après le shift")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                        }
+
+                        HStack(spacing: 16) {
+                            if let fatigue = post.fatigue {
+                                MoodIndicator(icon: "battery.50", value: fatigue, label: "Fatigue", color: Color(hex: "EF4444"))
+                            }
+                            if let load = post.emotionalLoad {
+                                MoodIndicator(icon: "heart.fill", value: load, label: "Charge émo.", color: Color(hex: "8B5CF6"))
+                            }
+                            if let sat = post.satisfaction {
+                                MoodIndicator(icon: "star.fill", value: sat, label: "Satisfaction", color: Color(hex: "F59E0B"))
+                            }
+                        }
                     }
+                    .padding(12)
+                    .background(Color(hex: "8B5CF6").opacity(0.05))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
-            .padding(20)
+            .padding(16)
             .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .clipShape(RoundedRectangle(cornerRadius: 14))
             .cardShadow()
         }
     }
+}
 
-    private func moodSummary(energy: Int, stress: Int, motivation: Int) -> some View {
-        HStack(spacing: 12) {
-            Label("\(energy)", systemImage: "bolt.fill")
-            Label("\(stress)", systemImage: "brain.head.profile")
-            Label("\(motivation)", systemImage: "flame.fill")
-        }
-        .font(.caption)
-        .foregroundStyle(.secondary)
-    }
+// MARK: - Mood Indicator
 
-    private func postMoodSummary(_ mood: Mood) -> some View {
-        HStack(spacing: 12) {
-            if let fatigue = mood.fatigue {
-                Label("\(fatigue)", systemImage: "battery.25")
+struct MoodIndicator: View {
+    let icon: String
+    let value: Int
+    let label: String
+    let color: Color
+
+    var body: some View {
+        VStack(spacing: 4) {
+            ZStack {
+                Circle()
+                    .fill(color.opacity(0.15))
+                    .frame(width: 40, height: 40)
+                Text("\(value)")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(color)
             }
-            if let load = mood.emotionalLoad {
-                Label("\(load)", systemImage: "heart.fill")
-            }
-            if let sat = mood.satisfaction {
-                Label("\(sat)", systemImage: "star.fill")
-            }
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
         }
-        .font(.caption)
-        .foregroundStyle(.secondary)
+        .frame(maxWidth: .infinity)
     }
 }
