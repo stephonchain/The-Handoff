@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 import Charts
 
-struct StatsView: View {
+struct ProgressionView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel: StatsViewModel?
     @State private var selectedTimeRange: TimeRange = .week
@@ -27,7 +27,7 @@ struct StatsView: View {
                 }
             }
             .background(Color(.systemGroupedBackground))
-            .navigationTitle(String(localized: "stats_title"))
+            .navigationTitle("Progression")
         }
         .task {
             if viewModel == nil {

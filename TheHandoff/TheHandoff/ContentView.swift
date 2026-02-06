@@ -6,27 +6,27 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView()
+            CheckInTabView()
                 .tabItem {
-                    Label(String(localized: "tab_home"), systemImage: "house.fill")
+                    Label("Check-in", systemImage: "bolt.fill")
                 }
                 .tag(0)
 
-            JournalListView()
+            JournalTabView()
                 .tabItem {
-                    Label(String(localized: "tab_journal"), systemImage: "book.fill")
+                    Label("Journal", systemImage: "book.fill")
                 }
                 .tag(1)
 
-            StatsView()
+            ProgressionView()
                 .tabItem {
-                    Label(String(localized: "tab_stats"), systemImage: "chart.bar.fill")
+                    Label("Progression", systemImage: "chart.bar.fill")
                 }
                 .tag(2)
 
-            SettingsView()
+            ProfilView()
                 .tabItem {
-                    Label(String(localized: "tab_settings"), systemImage: "gearshape.fill")
+                    Label("Profil", systemImage: "person.fill")
                 }
                 .tag(3)
         }
