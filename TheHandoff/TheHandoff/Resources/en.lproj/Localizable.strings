@@ -1,7 +1,7 @@
 /* Tabs */
 "tab_home" = "Home";
 "tab_journal" = "Journal";
-"tab_stats" = "Stats";
+"tab_stats" = "Progress";
 "tab_settings" = "Settings";
 
 /* Welcome Screen */
@@ -168,10 +168,82 @@
 "timeoff_days_count" = "%d days";
 "timeoff_button_save" = "Save";
 
-/* Stats (Placeholder) */
-"stats_title" = "Statistics";
-"stats_coming_soon_title" = "Coming Soon";
-"stats_coming_soon_subtitle" = "Your emotional statistics and trends will appear here in the next version.";
+/* Stats / Progression */
+"stats_title" = "Progression";
+
+/* Stability */
+"stats_stability_title" = "Stability maintained";
+"stats_stability_start" = "Start your first check-in";
+"stats_stability_one_day" = "1 day of self-care";
+"stats_stability_days" = "%d days of self-care";
+"stats_record" = "Record: %d days";
+
+/* Stability Messages */
+"stats_msg_start" = "Your first check-in awaits. Taking 30 seconds for yourself matters.";
+"stats_msg_beginning" = "You've started something important. Each check-in is an act of self-care.";
+"stats_msg_building" = "You're building a healthy habit. Your future self will thank you.";
+"stats_msg_strong" = "A week of consistency! You're proving that you matter too.";
+"stats_msg_impressive" = "This is remarkable. You're truly prioritizing your wellbeing.";
+"stats_msg_master" = "A month of self-care. You've made this part of who you are.";
+
+/* Quick Stats */
+"stats_total_checkins" = "Check-ins";
+"stats_total_checkouts" = "Check-outs";
+"stats_avg_pre_mood" = "Avg. before shift";
+"stats_avg_post_mood" = "Avg. after shift";
+
+/* Charts */
+"stats_mood_trend" = "Mood Trend (7 days)";
+"stats_before_after" = "Before vs After Shift";
+"stats_before_shift" = "Before shift";
+"stats_after_shift" = "After shift";
+"stats_no_data" = "No data yet";
+"stats_avg_improvement" = "Average: +%.0f%% after shift";
+"stats_avg_decline" = "Average: -%.0f%% after shift";
+
+/* Badges */
+"stats_badges" = "Achievements";
+
+/* Badge Titles */
+"badge_first_checkin_title" = "First Step";
+"badge_ten_checkins_title" = "Regular";
+"badge_fifty_checkins_title" = "Dedicated";
+"badge_week_streak_title" = "Week Warrior";
+"badge_month_streak_title" = "Month Master";
+"badge_balanced_week_title" = "Balanced";
+"badge_five_journals_title" = "Reflective";
+"badge_twenty_journals_title" = "Storyteller";
+"badge_pride_collector_title" = "Pride Collector";
+"badge_full_circle_title" = "Full Circle";
+
+/* Badge Descriptions */
+"badge_first_checkin_desc" = "You completed your first check-in. The journey of self-care begins.";
+"badge_ten_checkins_desc" = "10 check-ins completed. You're building a powerful habit.";
+"badge_fifty_checkins_desc" = "50 check-ins! Your commitment to yourself is inspiring.";
+"badge_week_streak_desc" = "7 consecutive days of check-ins. Consistency is key.";
+"badge_month_streak_desc" = "30 days in a row. You've made self-care a lifestyle.";
+"badge_balanced_week_desc" = "A full week without severe low moods. You're finding balance.";
+"badge_five_journals_desc" = "5 journal entries. Writing helps process emotions.";
+"badge_twenty_journals_desc" = "20 journal entries. You're a true storyteller of your journey.";
+"badge_pride_collector_desc" = "5 entries with highlights. You recognize your achievements.";
+"badge_full_circle_desc" = "10 complete days with both check-in and check-out.";
+
+/* Insights */
+"stats_insights" = "Insights";
+"insight_need_more_data_title" = "Building your profile";
+"insight_need_more_data_desc" = "Complete a few more check-ins to unlock personalized insights.";
+"insight_mood_improves_title" = "Shifts energize you";
+"insight_mood_improves_desc" = "Your mood improves by %d%% after shifts. Work seems to fuel you.";
+"insight_mood_drops_title" = "Shifts drain you";
+"insight_mood_drops_desc" = "Your mood drops by %d%% after shifts. Consider what helps you recover.";
+"insight_stability_title" = "You're on a roll";
+"insight_stability_desc" = "%d days of consistent self-check. Keep going!";
+"insight_high_stress_title" = "High stress detected";
+"insight_high_stress_desc" = "Many of your shifts start with high anticipated stress. Take care.";
+"insight_journal_helps_title" = "Writing helps you";
+"insight_journal_helps_desc" = "Your post-shift mood is better on days when you journal.";
+"insight_low_energy_title" = "Energy watch";
+"insight_low_energy_desc" = "You often start shifts with low energy. Prioritize rest.";
 
 /* Affirmation Categories */
 "category_resilience" = "Resilience";

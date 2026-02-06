@@ -18,7 +18,7 @@ struct ContentView: View {
                 }
                 .tag(1)
 
-            StatsPlaceholderView()
+            StatsView()
                 .tabItem {
                     Label(String(localized: "tab_stats"), systemImage: "chart.bar.fill")
                 }
