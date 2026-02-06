@@ -3,7 +3,7 @@ import SwiftData
 
 struct JournalDetailView: View {
     let entry: JournalEntry
-    @Bindable var viewModel: JournalViewModel
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     @State private var showingEdit = false
     @State private var showingDeleteAlert = false
@@ -11,65 +11,74 @@ struct JournalDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
+                // Header
                 HStack {
                     Text(entry.moodEmoji)
                         .font(.system(size: 40))
-                    Text(entry.title)
-                        .font(.title2)
-                        .fontWeight(.bold)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(entry.title)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        Text(entry.formattedDate)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
-                HStack(spacing: 8) {
-                    Text(entry.formattedDate)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-
-                    ForEach(entry.tags, id: \.self) { tag in
-                        Text(tag)
-                            .font(.caption2)
-                            .fontWeight(.medium)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color(hex: "F59E0B").opacity(0.1))
-                            .foregroundStyle(Color(hex: "F59E0B"))
-                            .clipShape(Capsule())
+                // Tags
+                if !entry.tags.isEmpty {
+                    FlowLayout(spacing: 8) {
+                        ForEach(entry.tags, id: \.self) { tag in
+                            Text(tag)
+                                .font(.caption)
+                                .fontWeight(.medium)
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 6)
+                                .background(Color(hex: "F59E0B").opacity(0.1))
+                                .foregroundStyle(Color(hex: "F59E0B"))
+                                .clipShape(Capsule())
+                        }
                     }
                 }
 
                 Divider()
 
+                // Content
                 Text(entry.content)
                     .font(.body)
 
+                // Highlights
                 if !entry.highlights.isEmpty {
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("journal_field_highlights")
+                        Text("Mes fiertés")
                             .font(.headline)
 
                         ForEach(entry.highlights, id: \.self) { highlight in
                             HStack(alignment: .top, spacing: 8) {
-                                Circle()
-                                    .fill(Color(hex: "F59E0B"))
-                                    .frame(width: 6, height: 6)
-                                    .padding(.top, 6)
+                                Text("🏆")
                                 Text(highlight)
                                     .font(.body)
                             }
+                            .padding(12)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color(hex: "F59E0B").opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                     }
                 }
             }
-            .padding(16)
+            .padding(20)
         }
+        .background(Color(.systemGroupedBackground))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu {
                     Button(action: { showingEdit = true }) {
-                        Label(String(localized: "button_edit"), systemImage: "pencil")
+                        Label("Modifier", systemImage: "pencil")
                     }
                     Button(role: .destructive, action: { showingDeleteAlert = true }) {
-                        Label(String(localized: "button_delete"), systemImage: "trash")
+                        Label("Supprimer", systemImage: "trash")
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
@@ -77,16 +86,116 @@ struct JournalDetailView: View {
             }
         }
         .sheet(isPresented: $showingEdit) {
-            JournalEditView(entry: entry, viewModel: viewModel)
+            EditJournalEntryView(entry: entry)
         }
-        .alert(String(localized: "journal_delete_alert_title"), isPresented: $showingDeleteAlert) {
-            Button(String(localized: "journal_delete_alert_cancel"), role: .cancel) {}
-            Button(String(localized: "journal_delete_alert_confirm"), role: .destructive) {
-                viewModel.deleteEntry(entry)
+        .alert("Supprimer cette entrée ?", isPresented: $showingDeleteAlert) {
+            Button("Annuler", role: .cancel) {}
+            Button("Supprimer", role: .destructive) {
+                modelContext.delete(entry)
+                try? modelContext.save()
                 dismiss()
             }
         } message: {
-            Text("journal_delete_alert_message")
+            Text("Cette action est irréversible.")
         }
+    }
+}
+
+// MARK: - Edit View
+
+struct EditJournalEntryView: View {
+    let entry: JournalEntry
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var title: String = ""
+    @State private var content: String = ""
+    @State private var moodEmoji: String = "😊"
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Title
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Titre")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        TextField("Titre de l'entrée", text: $title)
+                            .padding()
+                            .background(Color(.systemBackground))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+
+                    // Mood
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Humeur")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+
+                        HStack(spacing: 12) {
+                            ForEach(["😫", "😔", "😐", "🙂", "😊"], id: \.self) { emoji in
+                                Button(action: { moodEmoji = emoji }) {
+                                    Text(emoji)
+                                        .font(.title)
+                                        .padding(8)
+                                        .background(
+                                            Circle()
+                                                .fill(moodEmoji == emoji ? Color(hex: "F59E0B").opacity(0.2) : Color.clear)
+                                        )
+                                        .overlay(
+                                            Circle()
+                                                .stroke(moodEmoji == emoji ? Color(hex: "F59E0B") : .clear, lineWidth: 2)
+                                        )
+                                }
+                            }
+                        }
+                    }
+
+                    // Content
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Contenu")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+
+                        TextEditor(text: $content)
+                            .frame(minHeight: 200)
+                            .padding(12)
+                            .background(Color(.systemBackground))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    }
+                }
+                .padding(20)
+            }
+            .background(Color(.systemGroupedBackground))
+            .navigationTitle("Modifier")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Annuler") { dismiss() }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Enregistrer") {
+                        saveChanges()
+                        dismiss()
+                    }
+                    .fontWeight(.semibold)
+                    .disabled(title.isEmpty || content.isEmpty)
+                }
+            }
+            .onAppear {
+                title = entry.title
+                content = entry.content
+                moodEmoji = entry.moodEmoji
+            }
+        }
+    }
+
+    private func saveChanges() {
+        entry.title = title
+        entry.content = content
+        entry.moodEmoji = moodEmoji
+        entry.modifiedAt = Date()
+        try? modelContext.save()
     }
 }
