@@ -1,5 +1,7 @@
 import SwiftUI
 import SwiftData
+import PhotosUI
+import AVFoundation
 
 struct NewJournalEntryView: View {
     @Environment(\.modelContext) private var modelContext
@@ -7,22 +9,43 @@ struct NewJournalEntryView: View {
 
     let mode: JournalMode
 
+    // Entry data
+    @State private var entryDate: Date = Date()
     @State private var content: String = ""
     @State private var moodValue: Int = 3
     @State private var selectedTags: [String] = []
     @State private var highlights: [String] = []
     @State private var newHighlight: String = ""
 
+    // Media
+    @State private var selectedImages: [UIImage] = []
+    @State private var selectedPhotoItems: [PhotosPickerItem] = []
+    @State private var audioRecorder: AVAudioRecorder?
+    @State private var audioPlayer: AVAudioPlayer?
+    @State private var isRecording = false
+    @State private var recordedAudioURL: URL?
+    @State private var audioDuration: Double = 0
+    @State private var isPlayingAudio = false
+
     // Guided mode
     @State private var guidedChecklist: [GuidedItem] = []
     @State private var guidedNote: String = ""
+
+    // UI state
+    @State private var showingDatePicker = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    // Header
+                    // Header with date
                     headerSection
+
+                    // Date selector
+                    dateSection
+
+                    // Media section (photos + audio)
+                    mediaSection
 
                     // Content based on mode
                     switch mode {
@@ -57,6 +80,14 @@ struct NewJournalEntryView: View {
                 if mode == .guided {
                     setupGuidedChecklist()
                 }
+                setupAudioSession()
+            }
+            .onDisappear {
+                stopRecording()
+                stopPlayingAudio()
+            }
+            .onChange(of: selectedPhotoItems) { _, newItems in
+                loadSelectedPhotos(from: newItems)
             }
         }
     }
@@ -64,11 +95,11 @@ struct NewJournalEntryView: View {
     private var canSave: Bool {
         switch mode {
         case .quickDump:
-            return !content.isEmpty
+            return !content.isEmpty || !selectedImages.isEmpty || recordedAudioURL != nil
         case .guided:
-            return guidedChecklist.contains { $0.isChecked } || !guidedNote.isEmpty
+            return guidedChecklist.contains { $0.isChecked } || !guidedNote.isEmpty || !selectedImages.isEmpty || recordedAudioURL != nil
         case .pride:
-            return !highlights.isEmpty
+            return !highlights.isEmpty || !selectedImages.isEmpty || recordedAudioURL != nil
         }
     }
 
@@ -95,22 +126,184 @@ struct NewJournalEntryView: View {
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 20)
-
-            // Duration indicator
-            HStack(spacing: 4) {
-                Image(systemName: "clock")
-                    .font(.caption)
-                Text(mode.duration)
-                    .font(.caption)
-                    .fontWeight(.medium)
-            }
-            .foregroundStyle(mode.color)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 6)
-            .background(mode.color.opacity(0.1))
-            .clipShape(Capsule())
         }
         .padding(.top, 20)
+    }
+
+    // MARK: - Date Section
+
+    private var dateSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Button(action: {
+                withAnimation(.spring(response: 0.3)) {
+                    showingDatePicker.toggle()
+                }
+            }) {
+                HStack {
+                    Image(systemName: "calendar")
+                        .foregroundStyle(mode.color)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Date de l'entrée")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+
+                        Text(entryDate, format: .dateTime.weekday(.wide).day().month().year())
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                    }
+
+                    Spacer()
+
+                    Image(systemName: showingDatePicker ? "chevron.up" : "chevron.down")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding()
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .buttonStyle(.plain)
+
+            if showingDatePicker {
+                DatePicker(
+                    "Date",
+                    selection: $entryDate,
+                    in: ...Date(),
+                    displayedComponents: [.date, .hourAndMinute]
+                )
+                .datePickerStyle(.graphical)
+                .tint(mode.color)
+                .padding()
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+        }
+    }
+
+    // MARK: - Media Section
+
+    private var mediaSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .foregroundStyle(mode.color)
+                Text("Médias")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+            }
+
+            // Selected images preview
+            if !selectedImages.isEmpty {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 12) {
+                        ForEach(selectedImages.indices, id: \.self) { index in
+                            ZStack(alignment: .topTrailing) {
+                                Image(uiImage: selectedImages[index])
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 100, height: 100)
+                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+
+                                Button(action: {
+                                    withAnimation {
+                                        selectedImages.remove(at: index)
+                                        if index < selectedPhotoItems.count {
+                                            selectedPhotoItems.remove(at: index)
+                                        }
+                                    }
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.title3)
+                                        .foregroundStyle(.white)
+                                        .background(Circle().fill(.black.opacity(0.5)))
+                                }
+                                .offset(x: 8, y: -8)
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Audio recording preview
+            if recordedAudioURL != nil {
+                HStack(spacing: 12) {
+                    Button(action: toggleAudioPlayback) {
+                        ZStack {
+                            Circle()
+                                .fill(mode.color.opacity(0.15))
+                                .frame(width: 44, height: 44)
+
+                            Image(systemName: isPlayingAudio ? "stop.fill" : "play.fill")
+                                .foregroundStyle(mode.color)
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Note vocale")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+
+                        Text(formatDuration(audioDuration))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
+
+                    Button(action: deleteRecording) {
+                        Image(systemName: "trash")
+                            .foregroundStyle(.red)
+                    }
+                }
+                .padding()
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            }
+
+            // Action buttons
+            HStack(spacing: 12) {
+                // Photo picker
+                PhotosPicker(
+                    selection: $selectedPhotoItems,
+                    maxSelectionCount: 5,
+                    matching: .images
+                ) {
+                    HStack {
+                        Image(systemName: "photo")
+                        Text("Photos")
+                            .font(.subheadline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color(.systemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
+
+                // Audio recorder
+                Button(action: toggleRecording) {
+                    HStack {
+                        Image(systemName: isRecording ? "stop.circle.fill" : "mic")
+                            .foregroundStyle(isRecording ? .red : .primary)
+                        Text(isRecording ? "Arrêter" : "Audio")
+                            .font(.subheadline)
+                            .foregroundStyle(isRecording ? .red : .primary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(isRecording ? Color.red.opacity(0.1) : Color(.systemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(isRecording ? Color.red : .clear, lineWidth: 2)
+                    )
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemGray6).opacity(0.5))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     // MARK: - Quick Dump Mode
@@ -142,10 +335,7 @@ struct NewJournalEntryView: View {
             .background(Color(.systemGray6).opacity(0.5))
             .clipShape(RoundedRectangle(cornerRadius: 16))
 
-            // Mood selector
             moodSelector
-
-            // Tags
             tagSelector
         }
     }
@@ -154,7 +344,6 @@ struct NewJournalEntryView: View {
 
     private var guidedContent: some View {
         VStack(spacing: 20) {
-            // Checklist card
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     Image(systemName: "checklist")
@@ -181,7 +370,6 @@ struct NewJournalEntryView: View {
             .background(Color(.systemGray6).opacity(0.5))
             .clipShape(RoundedRectangle(cornerRadius: 16))
 
-            // Optional note
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Image(systemName: "note.text")
@@ -201,7 +389,6 @@ struct NewJournalEntryView: View {
             .background(Color(.systemGray6).opacity(0.5))
             .clipShape(RoundedRectangle(cornerRadius: 16))
 
-            // Mood selector
             moodSelector
         }
     }
@@ -225,7 +412,6 @@ struct NewJournalEntryView: View {
 
     private var prideContent: some View {
         VStack(spacing: 20) {
-            // Highlights list
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     Image(systemName: "star.fill")
@@ -268,7 +454,6 @@ struct NewJournalEntryView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
 
-                    // Add new highlight
                     HStack(spacing: 12) {
                         Image(systemName: "plus.circle")
                             .font(.title3)
@@ -298,7 +483,6 @@ struct NewJournalEntryView: View {
             .background(Color(.systemGray6).opacity(0.5))
             .clipShape(RoundedRectangle(cornerRadius: 16))
 
-            // Quick suggestions
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
                     Image(systemName: "sparkles")
@@ -337,7 +521,6 @@ struct NewJournalEntryView: View {
             .background(Color(.systemGray6).opacity(0.5))
             .clipShape(RoundedRectangle(cornerRadius: 16))
 
-            // Optional note
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Image(systemName: "note.text")
@@ -524,6 +707,118 @@ struct NewJournalEntryView: View {
         HapticManager.shared.impact(style: .light)
     }
 
+    // MARK: - Photo Handling
+
+    private func loadSelectedPhotos(from items: [PhotosPickerItem]) {
+        Task {
+            var images: [UIImage] = []
+            for item in items {
+                if let data = try? await item.loadTransferable(type: Data.self),
+                   let image = UIImage(data: data) {
+                    images.append(image)
+                }
+            }
+            await MainActor.run {
+                selectedImages = images
+            }
+        }
+    }
+
+    // MARK: - Audio Recording
+
+    private func setupAudioSession() {
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker])
+            try session.setActive(true)
+        } catch {
+            print("Failed to setup audio session: \(error)")
+        }
+    }
+
+    private func toggleRecording() {
+        if isRecording {
+            stopRecording()
+        } else {
+            startRecording()
+        }
+    }
+
+    private func startRecording() {
+        let audioFilename = FileManager.default.temporaryDirectory.appendingPathComponent("voice_note_\(UUID().uuidString).m4a")
+
+        let settings: [String: Any] = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 44100,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ]
+
+        do {
+            audioRecorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+            audioRecorder?.record()
+            isRecording = true
+            recordedAudioURL = audioFilename
+            HapticManager.shared.impact(style: .medium)
+        } catch {
+            print("Could not start recording: \(error)")
+        }
+    }
+
+    private func stopRecording() {
+        audioRecorder?.stop()
+        isRecording = false
+
+        if let url = recordedAudioURL {
+            do {
+                let player = try AVAudioPlayer(contentsOf: url)
+                audioDuration = player.duration
+            } catch {
+                print("Could not get audio duration: \(error)")
+            }
+        }
+    }
+
+    private func deleteRecording() {
+        stopPlayingAudio()
+        if let url = recordedAudioURL {
+            try? FileManager.default.removeItem(at: url)
+        }
+        recordedAudioURL = nil
+        audioDuration = 0
+        HapticManager.shared.impact(style: .light)
+    }
+
+    private func toggleAudioPlayback() {
+        if isPlayingAudio {
+            stopPlayingAudio()
+        } else {
+            playAudio()
+        }
+    }
+
+    private func playAudio() {
+        guard let url = recordedAudioURL else { return }
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.play()
+            isPlayingAudio = true
+        } catch {
+            print("Could not play audio: \(error)")
+        }
+    }
+
+    private func stopPlayingAudio() {
+        audioPlayer?.stop()
+        isPlayingAudio = false
+    }
+
+    private func formatDuration(_ duration: Double) -> String {
+        let minutes = Int(duration) / 60
+        let seconds = Int(duration) % 60
+        return String(format: "%d:%02d", minutes, seconds)
+    }
+
     // MARK: - Save
 
     private func saveEntry() {
@@ -549,9 +844,21 @@ struct NewJournalEntryView: View {
             entryContent = content.isEmpty ? highlightsText : "\(highlightsText)\n\n\(content)"
         }
 
-        let entry = JournalEntry(title: entryTitle, content: entryContent, moodEmoji: moodEmoji(moodValue))
+        let entry = JournalEntry(title: entryTitle, content: entryContent, moodEmoji: moodEmoji(moodValue), date: entryDate)
         entry.tags = selectedTags
         entry.highlights = highlights
+
+        // Save images
+        if !selectedImages.isEmpty {
+            entry.imageData = selectedImages.compactMap { $0.jpegData(compressionQuality: 0.8) }
+        }
+
+        // Save audio
+        if let audioURL = recordedAudioURL,
+           let audioData = try? Data(contentsOf: audioURL) {
+            entry.audioData = audioData
+            entry.audioDuration = audioDuration
+        }
 
         modelContext.insert(entry)
         try? modelContext.save()
@@ -587,7 +894,6 @@ struct GuidedChecklistRow: View {
             HapticManager.shared.impact(style: .light)
         }) {
             HStack(spacing: 16) {
-                // Checkbox
                 ZStack {
                     RoundedRectangle(cornerRadius: 6)
                         .stroke(item.isChecked ? color : Color(.systemGray3), lineWidth: 2)
@@ -604,13 +910,11 @@ struct GuidedChecklistRow: View {
                     }
                 }
 
-                // Icon
                 Image(systemName: item.icon)
                     .font(.body)
                     .foregroundStyle(item.isChecked ? color : Color(.tertiaryLabel))
                     .frame(width: 24)
 
-                // Text
                 Text(item.text)
                     .font(.subheadline)
                     .foregroundStyle(item.isChecked ? .primary : .secondary)

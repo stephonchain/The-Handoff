@@ -116,16 +116,21 @@ final class JournalEntry {
     var createdAt: Date
     var modifiedAt: Date
 
+    // Media attachments
+    @Attribute(.externalStorage) var imageData: [Data]?
+    @Attribute(.externalStorage) var audioData: Data?
+    var audioDuration: Double?
+
     @Relationship var shift: Shift?
 
-    init(title: String, content: String, moodEmoji: String = "😊") {
+    init(title: String, content: String, moodEmoji: String = "😊", date: Date = Date()) {
         self.id = UUID()
         self.title = title
         self.content = content
         self.moodEmoji = moodEmoji
         self.tags = []
         self.highlights = []
-        self.createdAt = Date()
+        self.createdAt = date
         self.modifiedAt = Date()
     }
 
@@ -140,11 +145,20 @@ final class JournalEntry {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
+        formatter.locale = Locale(identifier: "fr_FR")
         return formatter.string(from: createdAt)
     }
 
     var isToday: Bool { Calendar.current.isDateInToday(createdAt) }
     var isYesterday: Bool { Calendar.current.isDateInYesterday(createdAt) }
+
+    var hasMedia: Bool {
+        (imageData != nil && !(imageData?.isEmpty ?? true)) || audioData != nil
+    }
+
+    var imageCount: Int {
+        imageData?.count ?? 0
+    }
 }
 
 // MARK: - Vacation
