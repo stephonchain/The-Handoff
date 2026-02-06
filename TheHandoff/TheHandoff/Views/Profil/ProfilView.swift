@@ -299,14 +299,27 @@ struct ProfilView: View {
     private func loadProfile() {
         if let profile = profile {
             firstName = profile.firstName
+            // Load work settings from profile
+            if let savedServiceType = profile.serviceType,
+               let type = ServiceType(rawValue: savedServiceType) {
+                serviceType = type
+            }
+            if let savedWorkRhythm = profile.workRhythm,
+               let rhythm = WorkRhythm(rawValue: savedWorkRhythm) {
+                workRhythm = rhythm
+            }
         }
     }
 
     private func updateProfile() {
         if let profile = profile {
             profile.firstName = firstName
+            profile.serviceType = serviceType.rawValue
+            profile.workRhythm = workRhythm.rawValue
         } else if !firstName.isEmpty {
             let newProfile = UserProfile(firstName: firstName)
+            newProfile.serviceType = serviceType.rawValue
+            newProfile.workRhythm = workRhythm.rawValue
             modelContext.insert(newProfile)
         }
         try? modelContext.save()
