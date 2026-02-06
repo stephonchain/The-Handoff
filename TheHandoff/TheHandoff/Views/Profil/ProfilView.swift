@@ -149,7 +149,7 @@ struct ProfilView: View {
                             .foregroundStyle(.secondary)
                     }
 
-                    Link(destination: URL(string: "mailto:support@handoff.app")!) {
+                    Link(destination: URL(string: "mailto:handoff@steverover.com")!) {
                         HStack {
                             Text("Contacter le support")
                             Spacer()
@@ -159,7 +159,7 @@ struct ProfilView: View {
                     }
                     .foregroundStyle(.primary)
 
-                    Link(destination: URL(string: "https://stephonchain.github.io/The-Handoff/privacy.html")!) {
+                    Link(destination: URL(string: "https://handoff.steverover.com/privacy.html")!) {
                         HStack {
                             Text("Politique de confidentialité")
                             Spacer()
@@ -169,7 +169,7 @@ struct ProfilView: View {
                     }
                     .foregroundStyle(.primary)
 
-                    Link(destination: URL(string: "https://stephonchain.github.io/The-Handoff/terms.html")!) {
+                    Link(destination: URL(string: "https://handoff.steverover.com/terms.html")!) {
                         HStack {
                             Text("Conditions d'utilisation")
                             Spacer()

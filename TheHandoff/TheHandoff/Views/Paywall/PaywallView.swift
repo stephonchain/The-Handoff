@@ -264,8 +264,8 @@ struct PaywallView: View {
                 .multilineTextAlignment(.center)
 
             HStack(spacing: 16) {
-                Link("Conditions d'utilisation", destination: URL(string: "https://stephonchain.github.io/The-Handoff/terms.html")!)
-                Link("Confidentialité", destination: URL(string: "https://stephonchain.github.io/The-Handoff/privacy.html")!)
+                Link("Conditions d'utilisation", destination: URL(string: "https://handoff.steverover.com/terms.html")!)
+                Link("Confidentialité", destination: URL(string: "https://handoff.steverover.com/privacy.html")!)
             }
             .font(.caption2)
             .foregroundStyle(.secondary)
