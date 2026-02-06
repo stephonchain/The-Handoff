@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Handoff</title>
+    <style>
+        :root {
+            --primary: #F59E0B;
+            --bg: #FAFAFA;
+            --text: #1F2937;
+            --text-secondary: #6B7280;
+            --card-bg: #FFFFFF;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #111827;
+                --text: #F9FAFB;
+                --text-secondary: #9CA3AF;
+                --card-bg: #1F2937;
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--text-secondary);
+            margin-bottom: 40px;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .lang-switch {
+            margin-top: 20px;
+        }
+        .lang-switch button {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            color: var(--text);
+            padding: 8px 20px;
+            margin: 0 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .lang-switch button.active {
+            background: var(--primary);
+            color: white;
+        }
+        .lang-switch button:hover {
+            opacity: 0.8;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .last-updated {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        p, ul {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+        ul {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .highlight {
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight p {
+            margin: 0;
+            color: var(--text);
+            font-weight: 500;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+        }
+        .content {
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        a {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Handoff</div>
+            <div class="lang-switch">
+                <button id="btn-en" class="active" onclick="switchLang('en')">English</button>
+                <button id="btn-fr" onclick="switchLang('fr')">Francais</button>
+            </div>
+        </header>
+
+        <!-- English Content -->
+        <div id="content-en" class="content active">
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last updated: February 6, 2025</p>
+
+            <div class="highlight">
+                <p>Your data stays on your device. We do not collect, store, or transmit any of your personal information to external servers.</p>
+            </div>
+
+            <h2>1. Introduction</h2>
+            <p>Handoff ("we", "our", or "the app") is a mental wellness application designed for healthcare workers. We are committed to protecting your privacy and ensuring your personal data remains secure and confidential.</p>
+
+            <h2>2. Data We Collect</h2>
+            <p><strong>We do not collect any personal data.</strong> All information you enter in Handoff is stored locally on your device using Apple's secure data storage system (SwiftData). This includes:</p>
+            <ul>
+                <li>Your first name</li>
+                <li>Check-in entries (mood, energy, stress levels)</li>
+                <li>Journal entries (text, photos, voice notes)</li>
+                <li>Vacation/time-off schedules</li>
+                <li>App preferences and settings</li>
+            </ul>
+
+            <h2>3. Data Storage</h2>
+            <p>All your data is stored exclusively on your device. We use Apple's SwiftData framework which provides:</p>
+            <ul>
+                <li>Local-only storage (no cloud sync by default)</li>
+                <li>Encryption at rest via iOS device encryption</li>
+                <li>Secure deletion when you uninstall the app</li>
+            </ul>
+
+            <h2>4. Data Sharing</h2>
+            <p>We do not share, sell, rent, or trade your personal information with any third parties. Since we don't collect your data, there is nothing to share.</p>
+
+            <h2>5. Third-Party Services</h2>
+            <p>Handoff uses the following third-party services:</p>
+            <ul>
+                <li><strong>Apple StoreKit:</strong> For processing in-app purchases and subscriptions. Apple may collect transaction data according to their privacy policy.</li>
+            </ul>
+            <p>We do not use analytics, tracking, or advertising services.</p>
+
+            <h2>6. Photos and Microphone</h2>
+            <p>Handoff requests access to:</p>
+            <ul>
+                <li><strong>Photo Library:</strong> To allow you to add images to your journal entries. Photos are stored locally on your device.</li>
+                <li><strong>Microphone:</strong> To allow you to record voice notes in your journal. Audio recordings are stored locally on your device.</li>
+            </ul>
+            <p>These permissions are optional and only used when you explicitly choose to add media to your journal.</p>
+
+            <h2>7. Data Retention</h2>
+            <p>Your data remains on your device until you:</p>
+            <ul>
+                <li>Delete individual entries within the app</li>
+                <li>Uninstall the app (which removes all data)</li>
+                <li>Reset your device</li>
+            </ul>
+
+            <h2>8. Your Rights</h2>
+            <p>Since all data is stored locally on your device, you have complete control over it. You can:</p>
+            <ul>
+                <li>View all your data within the app</li>
+                <li>Edit or delete any entry at any time</li>
+                <li>Remove all data by uninstalling the app</li>
+            </ul>
+
+            <h2>9. Children's Privacy</h2>
+            <p>Handoff is not intended for users under 17 years of age. We do not knowingly collect information from children.</p>
+
+            <h2>10. Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. We will notify you of any changes by updating the "Last updated" date at the top of this policy.</p>
+
+            <h2>11. Contact Us</h2>
+            <p>If you have questions about this Privacy Policy, please contact us at:</p>
+            <p><a href="mailto:support@handoff.app">support@handoff.app</a></p>
+        </div>
+
+        <!-- French Content -->
+        <div id="content-fr" class="content">
+            <h1>Politique de Confidentialite</h1>
+            <p class="last-updated">Derniere mise a jour : 6 fevrier 2025</p>
+
+            <div class="highlight">
+                <p>Tes donnees restent sur ton appareil. Nous ne collectons, ne stockons ni ne transmettons aucune de tes informations personnelles vers des serveurs externes.</p>
+            </div>
+
+            <h2>1. Introduction</h2>
+            <p>Handoff ("nous", "notre" ou "l'application") est une application de bien-etre mental concue pour les professionnels de sante. Nous nous engageons a proteger ta vie privee et a garantir que tes donnees personnelles restent securisees et confidentielles.</p>
+
+            <h2>2. Donnees que nous collectons</h2>
+            <p><strong>Nous ne collectons aucune donnee personnelle.</strong> Toutes les informations que tu saisis dans Handoff sont stockees localement sur ton appareil en utilisant le systeme de stockage securise d'Apple (SwiftData). Cela inclut :</p>
+            <ul>
+                <li>Ton prenom</li>
+                <li>Tes check-ins (humeur, energie, niveaux de stress)</li>
+                <li>Tes entrees de journal (texte, photos, notes vocales)</li>
+                <li>Tes conges et vacances planifies</li>
+                <li>Tes preferences et parametres de l'application</li>
+            </ul>
+
+            <h2>3. Stockage des donnees</h2>
+            <p>Toutes tes donnees sont stockees exclusivement sur ton appareil. Nous utilisons le framework SwiftData d'Apple qui offre :</p>
+            <ul>
+                <li>Un stockage local uniquement (pas de synchronisation cloud par defaut)</li>
+                <li>Un chiffrement au repos via le chiffrement de l'appareil iOS</li>
+                <li>Une suppression securisee lorsque tu desinstalles l'application</li>
+            </ul>
+
+            <h2>4. Partage des donnees</h2>
+            <p>Nous ne partageons, ne vendons, ne louons ni n'echangeons tes informations personnelles avec des tiers. Puisque nous ne collectons pas tes donnees, il n'y a rien a partager.</p>
+
+            <h2>5. Services tiers</h2>
+            <p>Handoff utilise les services tiers suivants :</p>
+            <ul>
+                <li><strong>Apple StoreKit :</strong> Pour le traitement des achats integres et des abonnements. Apple peut collecter des donnees de transaction selon sa politique de confidentialite.</li>
+            </ul>
+            <p>Nous n'utilisons pas de services d'analyse, de suivi ou de publicite.</p>
+
+            <h2>6. Photos et Microphone</h2>
+            <p>Handoff demande l'acces a :</p>
+            <ul>
+                <li><strong>Phototheque :</strong> Pour te permettre d'ajouter des images a tes entrees de journal. Les photos sont stockees localement sur ton appareil.</li>
+                <li><strong>Microphone :</strong> Pour te permettre d'enregistrer des notes vocales dans ton journal. Les enregistrements audio sont stockes localement sur ton appareil.</li>
+            </ul>
+            <p>Ces permissions sont optionnelles et utilisees uniquement lorsque tu choisis explicitement d'ajouter des medias a ton journal.</p>
+
+            <h2>7. Conservation des donnees</h2>
+            <p>Tes donnees restent sur ton appareil jusqu'a ce que tu :</p>
+            <ul>
+                <li>Supprimes des entrees individuelles dans l'application</li>
+                <li>Desinstalles l'application (ce qui supprime toutes les donnees)</li>
+                <li>Reinitialises ton appareil</li>
+            </ul>
+
+            <h2>8. Tes droits</h2>
+            <p>Puisque toutes les donnees sont stockees localement sur ton appareil, tu en as le controle total. Tu peux :</p>
+            <ul>
+                <li>Consulter toutes tes donnees dans l'application</li>
+                <li>Modifier ou supprimer n'importe quelle entree a tout moment</li>
+                <li>Supprimer toutes les donnees en desinstallant l'application</li>
+            </ul>
+
+            <h2>9. Confidentialite des enfants</h2>
+            <p>Handoff n'est pas destine aux utilisateurs de moins de 17 ans. Nous ne collectons pas sciemment d'informations aupres d'enfants.</p>
+
+            <h2>10. Modifications de cette politique</h2>
+            <p>Nous pouvons mettre a jour cette Politique de Confidentialite de temps en temps. Nous te notifierons de tout changement en mettant a jour la date de "Derniere mise a jour" en haut de cette politique.</p>
+
+            <h2>11. Nous contacter</h2>
+            <p>Si tu as des questions concernant cette Politique de Confidentialite, contacte-nous a :</p>
+            <p><a href="mailto:support@handoff.app">support@handoff.app</a></p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Handoff. All rights reserved.</p>
+            <p><a href="index.html">Home</a> | <a href="terms.html">Terms of Service</a></p>
+        </footer>
+    </div>
+
+    <script>
+        function switchLang(lang) {
+            document.getElementById('content-en').classList.remove('active');
+            document.getElementById('content-fr').classList.remove('active');
+            document.getElementById('btn-en').classList.remove('active');
+            document.getElementById('btn-fr').classList.remove('active');
+
+            document.getElementById('content-' + lang).classList.add('active');
+            document.getElementById('btn-' + lang).classList.add('active');
+        }
+
+        // Detect browser language
+        if (navigator.language.startsWith('fr')) {
+            switchLang('fr');
+        }
+    </script>
+</body>
+</html>
