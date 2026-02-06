@@ -319,15 +319,16 @@ struct PaywallView: View {
             return nil
         }
 
-        let yearlyTotal = product.price
-        let monthlyTotal = monthly.price * Decimal(12)
+        let yearlyPrice = NSDecimalNumber(decimal: product.price).doubleValue
+        let monthlyPrice = NSDecimalNumber(decimal: monthly.price).doubleValue
+        let monthlyTotal = monthlyPrice * 12.0
 
         guard monthlyTotal > 0 else { return nil }
 
-        let savings = monthlyTotal - yearlyTotal
-        let percentage = NSDecimalNumber(decimal: (savings / monthlyTotal) * Decimal(100)).intValue
+        let savings = monthlyTotal - yearlyPrice
+        let percentage = Int((savings / monthlyTotal) * 100.0)
 
-        return "Économise \(percentage)%"
+        return percentage > 0 ? "Économise \(percentage)%" : nil
     }
 
     private func purchase() async {
