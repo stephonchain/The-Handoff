@@ -233,7 +233,7 @@ struct ProfilView: View {
                 // User is not Premium - Show upsell
                 Button {
                     showingPaywall = true
-                    HapticManager.shared.impact(.light)
+                    HapticManager.shared.impact(style: .light)
                 } label: {
                     HStack(spacing: 16) {
                         ZStack {
