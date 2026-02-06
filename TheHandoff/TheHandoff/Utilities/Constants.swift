@@ -1,7 +1,7 @@
 import Foundation
 
 enum AppConstants {
-    static let appName = "The Handoff"
+    static let appName = "Handoff"
     static let version = "0.1"
     static let build = "1"
     static let supportEmail = "steve@steverover.com"

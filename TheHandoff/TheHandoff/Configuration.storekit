@@ -1,0 +1,177 @@
+{
+  "identifier" : "E9F8D7C6-B5A4-4321-8765-FEDCBA987654",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "24.99",
+      "familyShareable" : false,
+      "internalID" : "LIFETIME001",
+      "localizations" : [
+        {
+          "description" : "Accès permanent à toutes les fonctionnalités Premium",
+          "displayName" : "Accès à vie",
+          "locale" : "fr"
+        },
+        {
+          "description" : "Permanent access to all Premium features",
+          "displayName" : "Lifetime Access",
+          "locale" : "en"
+        }
+      ],
+      "productID" : "com.handoff.lifetime",
+      "referenceName" : "Lifetime Access",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "1234567890",
+    "_developerTeamID" : "B8L2G6Y2K2",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 759844800,
+    "_locale" : "fr",
+    "_storefront" : "FRA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "HANDOFF_PREMIUM",
+      "localizations" : [
+        {
+          "description" : "Abonnement Handoff Premium",
+          "displayName" : "Handoff Premium",
+          "locale" : "fr"
+        },
+        {
+          "description" : "Handoff Premium Subscription",
+          "displayName" : "Handoff Premium",
+          "locale" : "en"
+        }
+      ],
+      "name" : "Handoff Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "1.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "MONTHLY001",
+          "introductoryOffer" : {
+            "internalID" : "MONTHLYTRIAL",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Accès complet renouvelé chaque mois",
+              "displayName" : "Abonnement mensuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Full access renewed every month",
+              "displayName" : "Monthly subscription",
+              "locale" : "en"
+            }
+          ],
+          "productID" : "com.handoff.subscription.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly Subscription",
+          "subscriptionGroupID" : "HANDOFF_PREMIUM",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "YEARLY001",
+          "introductoryOffer" : {
+            "internalID" : "YEARLYTRIAL",
+            "numberOfPeriods" : 1,
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Accès complet renouvelé chaque année",
+              "displayName" : "Abonnement annuel",
+              "locale" : "fr"
+            },
+            {
+              "description" : "Full access renewed every year",
+              "displayName" : "Yearly subscription",
+              "locale" : "en"
+            }
+          ],
+          "productID" : "com.handoff.subscription.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Yearly Subscription",
+          "subscriptionGroupID" : "HANDOFF_PREMIUM",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

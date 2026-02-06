@@ -5,7 +5,7 @@
 "tab_settings" = "Réglages";
 
 /* Welcome Screen */
-"welcome_title" = "Bienvenue sur The Handoff";
+"welcome_title" = "Bienvenue sur Handoff";
 "welcome_subtitle" = "Suivez votre bien-être émotionnel shift après shift";
 "welcome_feature_1" = "Suivez votre humeur avant et après chaque shift";
 "welcome_feature_2" = "Écrivez dans votre journal personnel";

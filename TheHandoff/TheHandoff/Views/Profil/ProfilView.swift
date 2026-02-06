@@ -14,6 +14,8 @@ struct ProfilView: View {
     @State private var remindersEnabled: Bool = false
 
     @State private var showingVacations = false
+    @State private var showingPaywall = false
+    @State private var subscriptionManager = SubscriptionManager.shared
 
     private var profile: UserProfile? { profiles.first }
 
@@ -56,6 +58,9 @@ struct ProfilView: View {
                     }
                     .padding(.vertical, 8)
                 }
+
+                // Premium section
+                premiumSection
 
                 // Work section
                 Section("Mon travail") {
@@ -159,6 +164,115 @@ struct ProfilView: View {
             .onAppear {
                 loadProfile()
             }
+            .sheet(isPresented: $showingPaywall) {
+                PaywallView()
+            }
+        }
+    }
+
+    // MARK: - Premium Section
+    @ViewBuilder
+    private var premiumSection: some View {
+        Section {
+            if subscriptionManager.isPremium {
+                // User is Premium
+                HStack(spacing: 16) {
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [Color(hex: "F59E0B"), Color(hex: "EF4444")],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .frame(width: 50, height: 50)
+
+                        Image(systemName: "star.fill")
+                            .font(.title2)
+                            .foregroundStyle(.white)
+                    }
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Handoff Premium")
+                            .font(.headline)
+
+                        Text(premiumStatusText)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.title2)
+                        .foregroundStyle(Color(hex: "10B981"))
+                }
+                .padding(.vertical, 8)
+            } else {
+                // User is not Premium - Show upsell
+                Button {
+                    showingPaywall = true
+                    HapticManager.shared.impact(.light)
+                } label: {
+                    HStack(spacing: 16) {
+                        ZStack {
+                            Circle()
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Color(hex: "F59E0B"), Color(hex: "EF4444")],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(width: 50, height: 50)
+
+                            Image(systemName: "star.fill")
+                                .font(.title2)
+                                .foregroundStyle(.white)
+                        }
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Passer à Premium")
+                                .font(.headline)
+                                .foregroundStyle(.primary)
+
+                            Text("1 semaine d'essai gratuit")
+                                .font(.caption)
+                                .foregroundStyle(Color(hex: "10B981"))
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .font(.body.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 8)
+                }
+            }
+        }
+    }
+
+    private var premiumStatusText: String {
+        switch subscriptionManager.subscriptionStatus {
+        case .lifetime:
+            return "Accès à vie actif"
+        case .subscribed(let expirationDate):
+            if let date = expirationDate {
+                let formatter = DateFormatter()
+                formatter.dateStyle = .medium
+                formatter.locale = Locale(identifier: "fr_FR")
+                return "Renouvellement le \(formatter.string(from: date))"
+            }
+            return "Abonnement actif"
+        case .inTrial(let expirationDate):
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.locale = Locale(identifier: "fr_FR")
+            return "Essai jusqu'au \(formatter.string(from: expirationDate))"
+        case .notSubscribed:
+            return ""
         }
     }
 

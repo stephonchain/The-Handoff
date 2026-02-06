@@ -5,7 +5,7 @@
 "tab_settings" = "Settings";
 
 /* Welcome Screen */
-"welcome_title" = "Welcome to The Handoff";
+"welcome_title" = "Welcome to Handoff";
 "welcome_subtitle" = "Track your emotional wellbeing shift after shift";
 "welcome_feature_1" = "Track your mood before and after each shift";
 "welcome_feature_2" = "Write in your personal journal";
