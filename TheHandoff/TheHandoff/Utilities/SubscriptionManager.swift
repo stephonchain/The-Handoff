@@ -43,6 +43,7 @@ final class SubscriptionManager {
     private(set) var subscriptionStatus: SubscriptionStatus = .notSubscribed
     private(set) var isLoading = false
     private(set) var loadError: String?
+    private(set) var isEligibleForTrial = false
 
     private var updateListenerTask: Task<Void, Error>?
 
@@ -68,11 +69,26 @@ final class SubscriptionManager {
         Task {
             await loadProducts()
             await updateSubscriptionStatus()
+            await checkTrialEligibility()
         }
     }
 
     deinit {
         updateListenerTask?.cancel()
+    }
+
+    // MARK: - Check Trial Eligibility
+    @MainActor
+    func checkTrialEligibility() async {
+        // Check eligibility for any subscription product with an intro offer
+        guard let product = yearlyProduct ?? monthlyProduct,
+              let subscription = product.subscription else {
+            isEligibleForTrial = false
+            return
+        }
+
+        // Check if user is eligible for introductory offer
+        isEligibleForTrial = await subscription.isEligibleForIntroOffer
     }
 
     // MARK: - Load Products

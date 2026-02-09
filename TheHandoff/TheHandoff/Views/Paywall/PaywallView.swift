@@ -220,7 +220,9 @@ struct PaywallView: View {
     // MARK: - Trial Badge
     @ViewBuilder
     private var trialBadge: some View {
-        if let product = selectedProduct,
+        // Only show trial badge if user is eligible (per Apple guidelines)
+        if subscriptionManager.isEligibleForTrial,
+           let product = selectedProduct,
            let trialText = product.trialPeriodText {
             HStack(spacing: 8) {
                 Image(systemName: "gift.fill")
@@ -285,7 +287,8 @@ struct PaywallView: View {
             return "Sélectionner une offre"
         }
 
-        if product.trialPeriodText != nil {
+        // Only show trial text if user is eligible (per Apple guidelines)
+        if subscriptionManager.isEligibleForTrial && product.trialPeriodText != nil {
             return "Commencer l'essai gratuit"
         } else if product.id == SubscriptionProduct.lifetime.rawValue {
             return "Acheter \(product.displayPrice)"

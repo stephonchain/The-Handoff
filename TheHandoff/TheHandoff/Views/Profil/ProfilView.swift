@@ -257,9 +257,11 @@ struct ProfilView: View {
                                 .font(.headline)
                                 .foregroundStyle(.primary)
 
-                            Text("1 semaine d'essai gratuit")
-                                .font(.caption)
-                                .foregroundStyle(Color(hex: "10B981"))
+                            if subscriptionManager.isEligibleForTrial {
+                                Text("1 semaine d'essai gratuit")
+                                    .font(.caption)
+                                    .foregroundStyle(Color(hex: "10B981"))
+                            }
                         }
 
                         Spacer()
