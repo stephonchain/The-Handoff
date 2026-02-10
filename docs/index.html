@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handoff - Mental Wellness for Healthcare Workers</title>
+    <style>
+        :root {
+            --primary: #F59E0B;
+            --primary-dark: #D97706;
+            --bg: #FAFAFA;
+            --text: #1F2937;
+            --text-secondary: #6B7280;
+            --card-bg: #FFFFFF;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #111827;
+                --text: #F9FAFB;
+                --text-secondary: #9CA3AF;
+                --card-bg: #1F2937;
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, #EF4444 100%);
+            color: white;
+        }
+        .hero-logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .hero-tagline {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        .app-store-badge {
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .app-store-badge img {
+            height: 50px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .feature {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .feature h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .feature p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: var(--text);
+        }
+        .legal-links {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--card-bg);
+        }
+        .legal-links h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        .legal-links a {
+            display: inline-block;
+            margin: 10px 20px;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .legal-links a:hover {
+            background: var(--primary-dark);
+        }
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .lang-note {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-logo">Handoff</div>
+        <p class="hero-tagline">Mental wellness tracking designed for healthcare workers</p>
+        <p class="hero-tagline" style="font-size: 1rem; opacity: 0.8;">Suivi du bien-etre mental concu pour les soignants</p>
+        <!-- Uncomment when app is live on App Store -->
+        <!-- <a href="#" class="app-store-badge">
+            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+        </a> -->
+    </div>
+
+    <div class="container">
+        <h2 class="section-title">Features / Fonctionnalites</h2>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">&#128200;</div>
+                <h3>Check-ins</h3>
+                <p>Track your mood and energy before and after each shift</p>
+                <p style="font-style: italic; margin-top: 5px;">Suis ton humeur avant et apres chaque shift</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">&#128221;</div>
+                <h3>Journal</h3>
+                <p>Write, add photos and voice notes to process your experiences</p>
+                <p style="font-style: italic; margin-top: 5px;">Ecris et ajoute des photos et notes vocales</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">&#127942;</div>
+                <h3>Progress</h3>
+                <p>Visualize your wellness journey with detailed statistics</p>
+                <p style="font-style: italic; margin-top: 5px;">Visualise ta progression avec des statistiques</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">&#127796;</div>
+                <h3>Vacation Countdown</h3>
+                <p>Stay motivated with countdowns to your time off</p>
+                <p style="font-style: italic; margin-top: 5px;">Reste motive avec le compte a rebours des conges</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="legal-links">
+        <h2>Legal / Documents legaux</h2>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <p class="lang-note">Available in English and French / Disponible en anglais et francais</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Handoff. All rights reserved.</p>
+        <p>Contact: <a href="mailto:handoff@steverover.com">handoff@steverover.com</a></p>
+    </footer>
+</body>
+</html>

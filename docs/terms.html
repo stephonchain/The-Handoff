@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Handoff</title>
+    <style>
+        :root {
+            --primary: #F59E0B;
+            --bg: #FAFAFA;
+            --text: #1F2937;
+            --text-secondary: #6B7280;
+            --card-bg: #FFFFFF;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #111827;
+                --text: #F9FAFB;
+                --text-secondary: #9CA3AF;
+                --card-bg: #1F2937;
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--text-secondary);
+            margin-bottom: 40px;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .lang-switch {
+            margin-top: 20px;
+        }
+        .lang-switch button {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            color: var(--text);
+            padding: 8px 20px;
+            margin: 0 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .lang-switch button.active {
+            background: var(--primary);
+            color: white;
+        }
+        .lang-switch button:hover {
+            opacity: 0.8;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .last-updated {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        p, ul {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+        ul {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .highlight {
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .highlight p {
+            margin: 0;
+            color: var(--text);
+            font-weight: 500;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+        }
+        .content {
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        a {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Handoff</div>
+            <div class="lang-switch">
+                <button id="btn-en" class="active" onclick="switchLang('en')">English</button>
+                <button id="btn-fr" onclick="switchLang('fr')">Francais</button>
+            </div>
+        </header>
+
+        <!-- English Content -->
+        <div id="content-en" class="content active">
+            <h1>Terms of Service</h1>
+            <p class="last-updated">Last updated: February 6, 2025</p>
+
+            <div class="highlight">
+                <p>By using Handoff, you agree to these terms. Please read them carefully.</p>
+            </div>
+
+            <h2>1. Acceptance of Terms</h2>
+            <p>By downloading, installing, or using Handoff ("the App"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, do not use the App.</p>
+
+            <h2>2. Description of Service</h2>
+            <p>Handoff is a personal wellness application designed to help healthcare workers track their emotional wellbeing before and after work shifts. The App provides:</p>
+            <ul>
+                <li>Mood and energy check-in tools</li>
+                <li>Personal journaling features</li>
+                <li>Progress tracking and statistics</li>
+                <li>Vacation countdown features</li>
+            </ul>
+
+            <h2>3. Medical Disclaimer</h2>
+            <div class="highlight">
+                <p>Handoff is NOT a medical device and does NOT provide medical advice, diagnosis, or treatment.</p>
+            </div>
+            <p>The App is intended for personal wellness tracking only. It should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider with any questions you may have regarding a medical condition or mental health concerns.</p>
+            <p>If you are experiencing a mental health crisis, please contact emergency services or a mental health crisis line immediately.</p>
+
+            <h2>4. User Eligibility</h2>
+            <p>You must be at least 17 years old to use Handoff. By using the App, you represent and warrant that you meet this age requirement.</p>
+
+            <h2>5. User Account and Data</h2>
+            <p>All data you enter into Handoff is stored locally on your device. You are responsible for:</p>
+            <ul>
+                <li>Maintaining the security of your device</li>
+                <li>Backing up your device if you wish to preserve your data</li>
+                <li>Any content you create within the App</li>
+            </ul>
+
+            <h2>6. Subscriptions and Purchases</h2>
+            <p><strong>6.1 Premium Features:</strong> Handoff offers optional premium features through in-app purchases and subscriptions.</p>
+            <p><strong>6.2 Pricing:</strong></p>
+            <ul>
+                <li>Monthly subscription: 1.99 EUR/month</li>
+                <li>Annual subscription: 9.99 EUR/year</li>
+                <li>Lifetime access: 24.99 EUR (one-time purchase)</li>
+            </ul>
+            <p><strong>6.3 Free Trial:</strong> Subscriptions include a 7-day free trial. You will not be charged during the trial period. If you do not cancel before the trial ends, your subscription will automatically begin and you will be charged.</p>
+            <p><strong>6.4 Billing:</strong> Payment will be charged to your Apple ID account at confirmation of purchase. Subscriptions automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period.</p>
+            <p><strong>6.5 Cancellation:</strong> You can manage or cancel your subscription at any time through your Apple ID account settings. Cancellation takes effect at the end of the current billing period.</p>
+            <p><strong>6.6 Refunds:</strong> All purchases are processed by Apple. For refund requests, please contact Apple Support directly.</p>
+
+            <h2>7. Acceptable Use</h2>
+            <p>You agree not to:</p>
+            <ul>
+                <li>Use the App for any illegal purpose</li>
+                <li>Attempt to reverse engineer, decompile, or disassemble the App</li>
+                <li>Remove any copyright or proprietary notices from the App</li>
+                <li>Use the App to transmit harmful code or malware</li>
+            </ul>
+
+            <h2>8. Intellectual Property</h2>
+            <p>All content, features, and functionality of the App, including but not limited to text, graphics, logos, and software, are owned by Handoff and protected by international copyright, trademark, and other intellectual property laws.</p>
+
+            <h2>9. Limitation of Liability</h2>
+            <p>To the maximum extent permitted by law, Handoff and its developers shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of data, loss of profits, or emotional distress arising from your use of the App.</p>
+
+            <h2>10. Disclaimer of Warranties</h2>
+            <p>The App is provided "as is" and "as available" without warranties of any kind, either express or implied. We do not warrant that the App will be uninterrupted, error-free, or free of harmful components.</p>
+
+            <h2>11. Changes to Terms</h2>
+            <p>We reserve the right to modify these Terms at any time. We will notify users of any material changes by updating the "Last updated" date. Your continued use of the App after such changes constitutes acceptance of the new Terms.</p>
+
+            <h2>12. Termination</h2>
+            <p>We may terminate or suspend your access to the App at any time, without prior notice, for conduct that we believe violates these Terms or is harmful to other users or us.</p>
+
+            <h2>13. Governing Law</h2>
+            <p>These Terms shall be governed by and construed in accordance with the laws of France, without regard to its conflict of law provisions.</p>
+
+            <h2>14. Contact Information</h2>
+            <p>For questions about these Terms, please contact us at:</p>
+            <p><a href="mailto:handoff@steverover.com">handoff@steverover.com</a></p>
+        </div>
+
+        <!-- French Content -->
+        <div id="content-fr" class="content">
+            <h1>Conditions d'Utilisation</h1>
+            <p class="last-updated">Derniere mise a jour : 6 fevrier 2025</p>
+
+            <div class="highlight">
+                <p>En utilisant Handoff, tu acceptes ces conditions. Merci de les lire attentivement.</p>
+            </div>
+
+            <h2>1. Acceptation des conditions</h2>
+            <p>En telechargeant, installant ou utilisant Handoff ("l'Application"), tu acceptes d'etre lie par ces Conditions d'Utilisation ("Conditions"). Si tu n'acceptes pas ces Conditions, n'utilise pas l'Application.</p>
+
+            <h2>2. Description du service</h2>
+            <p>Handoff est une application de bien-etre personnel concue pour aider les professionnels de sante a suivre leur bien-etre emotionnel avant et apres leurs shifts. L'Application propose :</p>
+            <ul>
+                <li>Des outils de check-in pour l'humeur et l'energie</li>
+                <li>Des fonctionnalites de journal personnel</li>
+                <li>Un suivi de progression et des statistiques</li>
+                <li>Un compte a rebours pour les vacances</li>
+            </ul>
+
+            <h2>3. Avertissement medical</h2>
+            <div class="highlight">
+                <p>Handoff n'est PAS un dispositif medical et ne fournit PAS de conseils medicaux, de diagnostic ou de traitement.</p>
+            </div>
+            <p>L'Application est destinee uniquement au suivi du bien-etre personnel. Elle ne doit pas etre utilisee comme substitut a un avis medical professionnel, un diagnostic ou un traitement. Consulte toujours un professionnel de sante qualifie pour toute question concernant une condition medicale ou des preoccupations de sante mentale.</p>
+            <p>Si tu traverses une crise de sante mentale, contacte immediatement les services d'urgence ou une ligne de crise en sante mentale.</p>
+
+            <h2>4. Eligibilite des utilisateurs</h2>
+            <p>Tu dois avoir au moins 17 ans pour utiliser Handoff. En utilisant l'Application, tu declares et garantis que tu remplis cette condition d'age.</p>
+
+            <h2>5. Compte utilisateur et donnees</h2>
+            <p>Toutes les donnees que tu saisis dans Handoff sont stockees localement sur ton appareil. Tu es responsable de :</p>
+            <ul>
+                <li>Maintenir la securite de ton appareil</li>
+                <li>Sauvegarder ton appareil si tu souhaites preserver tes donnees</li>
+                <li>Tout contenu que tu crees dans l'Application</li>
+            </ul>
+
+            <h2>6. Abonnements et achats</h2>
+            <p><strong>6.1 Fonctionnalites Premium :</strong> Handoff propose des fonctionnalites premium optionnelles via des achats integres et des abonnements.</p>
+            <p><strong>6.2 Tarifs :</strong></p>
+            <ul>
+                <li>Abonnement mensuel : 1,99 EUR/mois</li>
+                <li>Abonnement annuel : 9,99 EUR/an</li>
+                <li>Acces a vie : 24,99 EUR (achat unique)</li>
+            </ul>
+            <p><strong>6.3 Essai gratuit :</strong> Les abonnements incluent un essai gratuit de 7 jours. Tu ne seras pas debite pendant la periode d'essai. Si tu n'annules pas avant la fin de l'essai, ton abonnement commencera automatiquement et tu seras debite.</p>
+            <p><strong>6.4 Facturation :</strong> Le paiement sera debite sur ton compte Apple ID lors de la confirmation de l'achat. Les abonnements se renouvellent automatiquement sauf si le renouvellement automatique est desactive au moins 24 heures avant la fin de la periode en cours.</p>
+            <p><strong>6.5 Annulation :</strong> Tu peux gerer ou annuler ton abonnement a tout moment via les parametres de ton compte Apple ID. L'annulation prend effet a la fin de la periode de facturation en cours.</p>
+            <p><strong>6.6 Remboursements :</strong> Tous les achats sont traites par Apple. Pour les demandes de remboursement, contacte directement le support Apple.</p>
+
+            <h2>7. Utilisation acceptable</h2>
+            <p>Tu t'engages a ne pas :</p>
+            <ul>
+                <li>Utiliser l'Application a des fins illegales</li>
+                <li>Tenter de faire de l'ingenierie inverse, decompiler ou desassembler l'Application</li>
+                <li>Supprimer les mentions de droits d'auteur ou de propriete de l'Application</li>
+                <li>Utiliser l'Application pour transmettre du code malveillant</li>
+            </ul>
+
+            <h2>8. Propriete intellectuelle</h2>
+            <p>Tout le contenu, les fonctionnalites et les fonctionnalites de l'Application, y compris mais sans s'y limiter, les textes, graphiques, logos et logiciels, sont la propriete de Handoff et sont proteges par les lois internationales sur le droit d'auteur, les marques et autres lois sur la propriete intellectuelle.</p>
+
+            <h2>9. Limitation de responsabilite</h2>
+            <p>Dans les limites autorisees par la loi, Handoff et ses developpeurs ne seront pas responsables des dommages indirects, accessoires, speciaux, consecutifs ou punitifs, y compris mais sans s'y limiter, la perte de donnees, la perte de profits ou la detresse emotionnelle resultant de ton utilisation de l'Application.</p>
+
+            <h2>10. Exclusion de garanties</h2>
+            <p>L'Application est fournie "en l'etat" et "selon disponibilite" sans garantie d'aucune sorte, expresse ou implicite. Nous ne garantissons pas que l'Application sera ininterrompue, sans erreur ou exempte de composants nuisibles.</p>
+
+            <h2>11. Modifications des conditions</h2>
+            <p>Nous nous reservons le droit de modifier ces Conditions a tout moment. Nous notifierons les utilisateurs de tout changement important en mettant a jour la date de "Derniere mise a jour". Ton utilisation continue de l'Application apres ces changements constitue une acceptation des nouvelles Conditions.</p>
+
+            <h2>12. Resiliation</h2>
+            <p>Nous pouvons resilier ou suspendre ton acces a l'Application a tout moment, sans preavis, pour tout comportement que nous estimons contraire a ces Conditions ou nuisible aux autres utilisateurs ou a nous-memes.</p>
+
+            <h2>13. Droit applicable</h2>
+            <p>Ces Conditions seront regies et interpretees conformement aux lois de la France, sans tenir compte de ses dispositions relatives aux conflits de lois.</p>
+
+            <h2>14. Coordonnees</h2>
+            <p>Pour toute question concernant ces Conditions, contacte-nous a :</p>
+            <p><a href="mailto:handoff@steverover.com">handoff@steverover.com</a></p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Handoff. All rights reserved.</p>
+            <p><a href="index.html">Home</a> | <a href="privacy.html">Privacy Policy</a></p>
+        </footer>
+    </div>
+
+    <script>
+        function switchLang(lang) {
+            document.getElementById('content-en').classList.remove('active');
+            document.getElementById('content-fr').classList.remove('active');
+            document.getElementById('btn-en').classList.remove('active');
+            document.getElementById('btn-fr').classList.remove('active');
+
+            document.getElementById('content-' + lang).classList.add('active');
+            document.getElementById('btn-' + lang).classList.add('active');
+        }
+
+        // Detect browser language
+        if (navigator.language.startsWith('fr')) {
+            switchLang('fr');
+        }
+    </script>
+</body>
+</html>
